@@ -5,10 +5,17 @@ int main()
 {
     int n;
     cin >> n;
-    int fac=1;
-    for(int i=2;i<=n;i++)
+    string temp=to_string(n);
+    int sum;
+    while (n>9)
     {
-        fac*=i;
+        sum=0;
+        for(int i =0 ;i<temp.length();i++)
+        {
+            sum+=temp[i]-'0';
+        }
+        n=sum;
+        temp=to_string(sum);
     }
-    cout << fac << endl;
+    cout << n;
 }
