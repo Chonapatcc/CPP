@@ -12,7 +12,7 @@ int main()
     for(int i =0;i<s.length();i++)
     {
         let=s[i];
-        tolower(let);
+        let=tolower(let);
         check=false;
         for(int y=0;y<5;y++)
         {
