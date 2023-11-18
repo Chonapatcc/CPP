@@ -1,7 +1,11 @@
-// setprecision example
-#include <bits/stdc++.h>
+#include <iostream>
 using namespace std;
-int main () {
-  int a=0,b=0;
-  cout << a+1<<b+1;
+
+void myFunction() {
+  cout << "I just got executed!";
+}
+
+int main() {
+  myFunction();
+  return 0;
 }
