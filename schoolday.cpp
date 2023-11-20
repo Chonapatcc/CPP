@@ -4,6 +4,9 @@ using namespace std;
 int main()
 {
     double a;
+
     cin >>a;
-    cout << ceil(a/5);
+    int b;
+    b=ceil(a/5);
+    cout <<b;
 }

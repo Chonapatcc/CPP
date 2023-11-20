@@ -1,11 +1,11 @@
 #include <iostream>
 using namespace std;
 
-void myFunction() {
-  cout << "I just got executed!";
-}
 
 int main() {
-  myFunction();
-  return 0;
+  string str ("There are two needles in this haystack.");
+  string str2 ("cat");
+
+  cout << str.find(str2) <<endl;
+  cout << string::npos;
 }
