@@ -34,12 +34,13 @@ int main()
             if(ch)
             {
                 l.push_back(i);
-                cout <<i<<endl;
+
                 c++;
             }
 
         }
 
     }
-    cout << c;
+    cout << "จำนวนเฉพาะในช่วง 0 ถึง "<<a<<endl;
+    cout << "มีอยู่ " << c << " จำนวน";
 }
