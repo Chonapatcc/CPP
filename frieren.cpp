@@ -3,8 +3,8 @@ using namespace std;
 
 int main()
 {
-    int a;
+    double a;
     cin >>a;
 
-    cout << ceil(M_PI*a*a);   
+    cout << 22*a*a/7;   
 }
