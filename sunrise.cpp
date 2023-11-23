@@ -9,10 +9,14 @@ int main()
     if(d==2)
     {
        
-        if(m%4==0 and m%100!=0 and m%400==0)
+        if(m%400==0)
         {
             cout <<29;
 
+        }
+        else if(m%4==0 and m%400!=0)
+        {
+            cout << 29;
         }
         else
         {
