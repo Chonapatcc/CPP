@@ -6,7 +6,7 @@ int main()
     double s,y;
     cin >> s >> y;
     double f=1/s+1/y;
-    f*=100;
+    f=1/f;
     cout << fixed<< setprecision(2) << f << " cm" << endl;
     if(f>0)
     {
