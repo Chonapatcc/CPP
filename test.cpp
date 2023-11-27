@@ -5,5 +5,5 @@ int main()
 {
     string cat="cat";
 
-    cout << 'c'+'d';
+    cout << 'm'-'i';
 }

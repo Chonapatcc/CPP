@@ -11,7 +11,7 @@ int main()
     }
     else if(a=="PAPER")
     {
-        cout <<"SCISSOR";
+        cout <<"SCISSORS";
     }
     else
     {
