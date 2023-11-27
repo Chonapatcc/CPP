@@ -3,11 +3,11 @@ using namespace std;
 
 int main()
 {
-    string arr[]={"Fire","Water" , " Wind" , " Ground" , " Light" , "Dark"};
+    string arr[]={"Fire","Water" , "Wind" , "Ground" , "Light" , "Dark"};
     string inp;
     cin >> inp;
     int a=-1,n=0,ind=0;
-    for(int i = 0; i < size(arr); i++)
+    for(int i = 0; i < sizeof(arr)/sizeof(arr[0]); i++)
     {
         if(inp==arr[i])
         {
