@@ -3,12 +3,13 @@ using namespace std;
 
 int main()
 {
-    string a;
+    string a,b;
     cin >> a;
+    b=a;
     int le=a.length();
     char list1[]={'s','x','z'},achar=a[le-1],achar0=a[le-2];
-    string list2[]={"sh","ch"},astring="";
-    astring+=achar0+achar;
+
+
 
     bool ch=false;
     
@@ -20,15 +21,13 @@ int main()
             break;
         }
     }
-    for(int i =0 ; i <2;i++)
+    if(achar0=='s' and achar=='h' or achar0=='c' and achar=='h')
     {
-        if(astring==list2[i])
-        {
-            ch=true;
-            break;
-        }
+        ch=true;
     }
 
+    
+    
     string vowel="aeiou";
     bool bey=true;
     for(int i =0;i<5;i++)
@@ -39,20 +38,21 @@ int main()
             break;
         }
     }
-
+  
 
 
     if(ch)
     {
-        cout << a+"es";
+        a+="es";
     }
     else if(achar=='y' and bey)
     {
         a[le-1]='i';
-        cout << a+"es";
+        a+="es";
     }
     else
     {
-        cout << a+"s";
+        a+="s";
     }
+    cout<<b<<" -> "<<a;
 }
