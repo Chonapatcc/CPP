@@ -3,7 +3,7 @@ using namespace std;
 
 int main()
 {
-    string cat="cat";
-
-    cout << 'm'-'i';
+    int n=3;
+    string bi=bitset<8>(n).to_string();
+    cout << bi;
 }
