@@ -1,9 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int main()
+
+
+main()
 {
-    int n=3;
-    string bi=bitset<8>(n).to_string();
-    cout << bi;
+    cout << "cat";
+    double a=10.00;
+    cout <<(int)(a) << a;
 }
