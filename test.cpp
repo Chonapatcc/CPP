@@ -5,7 +5,10 @@ using namespace std;
 
 main()
 {
-    cout << "cat";
-    double a=10.00;
-    cout <<(int)(a) << a;
+    for(int i =0 ; i <10 ; i ++)
+    {
+        if(i>5 and i<7)
+            cout<<"dig";continue;
+        cout << i <<endl;
+    }
 }
