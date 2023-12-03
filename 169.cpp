@@ -3,5 +3,7 @@ using namespace std;
 
 int main()
 {
-    cout >>"Hello Mononoke";
+    int a,b;
+    cin >> a>> b;
+    cout << a*a+b*b;
 }
