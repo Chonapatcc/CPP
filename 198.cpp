@@ -31,11 +31,17 @@ int main()
     t2=temp;
     //cout << t1 <<" " <<t2 <<endl;
     int row=stoi(t1),col=stoi(t2);
-    for(int i =0 ; i< n ;i++)
+    if(row>=n or col>=n)
     {
-        for(int y= 0 ;y < n; y++)
+        cout <<"That position is not loaded.";
+    }
+    else
+    {
+    for(int i =1 ; i<=n ;i++)
+    {
+        for(int y= 0 ;y <n; y++)
         {
-            if(col==i and row==y)
+            if(col==n-i and row==y)
             {
                 cout << '*';
             }
@@ -45,5 +51,6 @@ int main()
             }
         }
         cout <<endl;
+    }
     }
 }
