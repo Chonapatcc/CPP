@@ -1,9 +1,13 @@
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-#include <math.h>
 
 int main()
 {
-    
+    int i =1 ; 
+
+    for(;i<=12;i++)
+    {
+        cout << i <<endl;
+    }
 }
