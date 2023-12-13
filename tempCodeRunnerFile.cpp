@@ -1,5 +1,1 @@
-using namespace std;
-
-
-
-int main()
+034701

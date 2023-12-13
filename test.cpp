@@ -4,10 +4,9 @@ using namespace std;
 
 int main()
 {
-    int i =1 ; 
-
-    for(;i<=12;i++)
+    for(int i =1 ; i<=12 ; i++)
     {
-        cout << i <<endl;
+        printf("12*%d = %d\n",i,12*i );
     }
+
 }
