@@ -3,15 +3,16 @@ using namespace std;
 
 int main()
 {
-    int i =0 ; 
-    int c=0;
-    for(i=0; i < 10 ; i++)
+    int n;
+
+    double temp;
+    cin >>n;
+
+    for(int i=0 ; i< n ; i++ )
     {
-        c+=1;
-        if(c==6)
-        {
-            break;
-        }
+        cin >> temp;
+        double x = sqrt(1+(temp-1));
+        cout <<fixed << setprecision(2)<< -1+x <<endl;   
     }
-    cout << i;
+        
 }

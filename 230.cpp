@@ -22,7 +22,7 @@ int main()
         }
         else
         {
-            for(int i =0 ; i <y;i++ )
+            for(int i =0 ; i <y*2;i++ )
             {
                 cout << ' ';
             }
