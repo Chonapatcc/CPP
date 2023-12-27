@@ -7,4 +7,5 @@ int fun(int a)
 int main()
 {
     printf("cat");
+    printf("cat");
 }
