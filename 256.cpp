@@ -8,4 +8,5 @@ int main()
 {
     printf("cat");
     printf("cat");
+    pritnf("cat");
 }
