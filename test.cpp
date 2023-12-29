@@ -1,12 +1,17 @@
 #include <bits/stdc++.h>
+#include <unistd.h>
 using namespace std;
-void dog(int &x)
+
+int func(void)
 {
-    x+=100;
+    for(int a =0 ; a< 10 ; a++)
+    {
+        cout << a <<endl;
+    }
 }
+int a;
 int main()
 {   
-    int x=10;
-    dog(x);
-    cout << x;
+    func();
+
 }

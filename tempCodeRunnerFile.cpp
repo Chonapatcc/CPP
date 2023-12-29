@@ -1,1 +1,1 @@
-cout << temp << " ";
+nt a;
