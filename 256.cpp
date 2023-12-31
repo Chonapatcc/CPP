@@ -1,12 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
-int fun(int a)
-{
-    return a;
-}
+
 int main()
 {
-    printf("cat");
-    printf("cat");
-    pritnf("cat");
+    int a;
+    cin>>a;
+
+    for(int i= 1; i <=12 ; i++)
+    {
+        printf("%d x %d = %d\n",a,i,a*i);
+    }
 }
