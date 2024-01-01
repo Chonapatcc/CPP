@@ -17,10 +17,11 @@ int main()
         //cout <<a<<" " << b<<" " << max <<endl;
         
     }
-    int ch=max;
-    if(ch==max)
+    
+    if((int)max==max or m==4)
     {
         cout << max;
+        
     }
     else
     {
