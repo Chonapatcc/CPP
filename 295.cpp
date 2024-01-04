@@ -33,7 +33,7 @@ string func(string a, string b)
         id1++;
     }
 
-    int i = result.size();
+    int i = result.size()-1;
 
     while(i>=0 and result[i]==0)
     {
@@ -47,6 +47,16 @@ string func(string a, string b)
     }
 
     return t;
+}
+long long int modu(string a,int mod)
+{
+    long long int result = 0 ;
+    for(int i =0 ; i < a.size() ;i++)
+    {
+        result = (result*10+a[i]-'0')%mod;
+    }
+
+    return result ;
 }
 
 int main()
@@ -64,7 +74,7 @@ int main()
 
 
     string dif = func(t1,t2);
-    
+    long long int re=modu(dif,mod);
 
-    cout << dif;
+    cout << re;
 }
