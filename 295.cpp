@@ -11,6 +11,7 @@ string func(string a, string b)
     int id1=0;
     int id2=0;
 
+
     for(int i =len1-1 ; i>=0 ; i--)
     {
         id2=0;
@@ -48,33 +49,44 @@ string func(string a, string b)
 
     return t;
 }
-long long int modu(string a,int mod)
+long long int modu(string a ,long long int mod)
 {
-    long long int result = 0 ;
-    for(int i =0 ; i < a.size() ;i++)
+    long long int num =0;
+
+    for(int i=0 ; i< a.length()-10 ; i++)
     {
-        result = (result*10+a[i]-'0')%mod;
+        num=num*10+(a[i]-'0');
+        num%=mod;
     }
-
-    return result ;
+    return num;
 }
-
 int main()
 {
     long long int a;
     long long int b;
     cin>>a>>b;
-    a=log10l(a);
+    a=ceil(log10l(a)*pow(10,10));
+
+    
     long long int mod = 1000000007 ;
+    
 
     string t1= to_string(a);
     string t2= to_string(b);
 
-    //cout << t1 << endl <<t2 <<endl;
-
-
     string dif = func(t1,t2);
-    long long int re=modu(dif,mod);
+    cout <<dif <<endl;
 
-    cout << re;
+    long long int re = modu(dif,mod);
+    cout << endl <<re; 
+    /*
+    
+    
+
+    
+
+    
+    ong long int re=difn%mod;
+    cout <<endl << re;
+    cout << re+1;*/
 }
