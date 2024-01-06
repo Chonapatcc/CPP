@@ -10,15 +10,15 @@ int main()
 
     
     a[0]=log10l(a[0]);
-    a[2]=a[0]*(1+a[1]);
+    a[2]=ceil(a[0]*a[1]);
+
 
     
-    
-    cout << fixed << setprecision(30)<<a[2]<<endl;
+    //cout << fixed << setprecision(30)<<a[2]<<endl;
     //cout << fixed << setprecision(30)<<a2<<endl;
 
     a[2] = fmodl(a[2],mod);
-    cout << fixed << setprecision(20)<<a[2]<<endl;
+    cout << fixed <<setprecision(0)<<a[2]+1<<endl;
     /*;
     
     string a2[10] = {to_string(a[2])};
