@@ -3,25 +3,14 @@
 using namespace std;
 
 
-struct a
-{
-    int x;
-    int x2;
-};
-
-struct b
-{
-    int x1;
-    struct a a;
-};
 int main()
 {   
     
-    struct b cat;
-    cat.x1= 100;
-    cat.a={200,300};
+    char a[10]="cat";
 
-    printf("%d %d %d",cat.x1,cat.a.x,cat.a.x2);
+    a[2]= 'd';
+
+    cout << a; 
     
 
 
