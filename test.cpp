@@ -6,11 +6,14 @@ using namespace std;
 int main()
 {   
     
-    char a[10]="cat";
+    int a[10]={1,2,3};
+    char b[10] = {'1','2','3'};
 
-    a[2]= 'd';
+    int x,y;
+    //x=atoi(a);
+    y=atoi(b);
 
-    cout << a; 
+    cout << x << endl << y; 
     
     //pen
 
