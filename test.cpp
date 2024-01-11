@@ -5,18 +5,9 @@ using namespace std;
 
 int main()
 {   
+    char *str;
+    str = (char*) malloc(15);
     
-    int a[10]={1,2,3};
-    char b[10] = {'1','2','3'};
-
-    int x,y;
-    //x=atoi(a);
-    y=atoi(b);
-
-    cout << x << endl << y; 
-    
-    //pen
-
 
     
 
