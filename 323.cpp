@@ -78,7 +78,7 @@ int main()
 
     for(int i =0 ; i<ax ; i++)
     {
-        for(int y=0 ; y<bx;  y++)
+        for(int y=0 ; y<by;  y++)
         {
             int sum=0 ; 
 

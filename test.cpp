@@ -5,11 +5,10 @@ using namespace std;
 
 int main()
 {   
-    char *str;
-    str = (char*) malloc(15);
-    
+    char a;
+    cin>>a;
 
-    
+    cout << a  << " " << (int)'-';
 
 }
 
