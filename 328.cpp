@@ -15,7 +15,7 @@ int main()
         {
             cout <<"Error! Not have this floor";
             exit(0);
-        }
+        } 
         x++;
         cin>>arr[x];
 
