@@ -8,8 +8,8 @@ int main()
     
     cin>>a;
 
-    int plus=1;
-    int val=1;
+    long long int plus=1;
+    long long int val=1;
     
     while(a!=1)
     {
