@@ -4,17 +4,9 @@ using namespace std;
 
 int main()
 {
-    vector<int> a(10);
-    for(int i=0 ; i< 10 ;i++)
-    {
-        a[i] = i ; 
-    }
-
-
-    cout << sizeof(a) <<endl;
-    cout << size(a) <<endl;
-    cout << a.size() <<endl;
-
+    char a[10] = "ad";
+    char b[10]= "aa";
+    printf("%d",(strcmp(a,b)));
 
 
 }
