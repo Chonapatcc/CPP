@@ -16,12 +16,7 @@ public:
     
     Time(int duration):duration(duration){}
 
-    int getDuration()
-    {
-        int dur = hour*60*60 + minute*60+second;
-
-        return dur;
-    }
+   
 
     Time add(Time other)
     {
@@ -29,11 +24,13 @@ public:
         p->hour = hour+other.hour;
         p->minute = minute+other.minute;
         p->second = second+other.second;
-
+        p->hour%=24;
+        p->minute%=60;
+        p->second%=60;
         return *p;
     }
 
-    int	subtract(Time other)
+    int	subtract(Time other) const
     {
         int dif = getDuration() - other.getDuration();
         int m=23*60*60+59*60+60;
@@ -41,11 +38,15 @@ public:
         {
             dif+=m;
         }
+        if(dif>m)
+        {
+            dif%=m;
+        }
 
         return dif;
     }
 
-    int	equals(Time other)
+    int	equals(Time other) const
     {
         int time1 = getDuration();
         int time2 = other.getDuration();
@@ -53,7 +54,7 @@ public:
         return time1==time2;
     }
 
-    string toString()
+    string toString() const
     {
         string str="";
         stringstream x;
@@ -66,17 +67,24 @@ public:
         return str;
     }
     //getter 
-    int const getHour()
+    int getHour() const
     {
         return hour;
     }
-    int const getMinute()
+    int getMinute() const
     {
         return minute;
     }
-    int const getSecond()
+    int  getSecond() const
     {
         return second;
+    }
+
+    int getDuration() const
+    {
+        int dur = hour*60*60 + minute*60+second;
+
+        return dur;
     }
 
 
@@ -87,13 +95,16 @@ public:
 
 int main()
 {
-    Time a(02,02,02),b(01,01,01);
+    Time a(12,12,12),b(01,01,01);
 
     cout << a.getDuration() << endl;
     cout << b.getDuration() << endl;
     cout << b.subtract(a) <<endl;
 
-    cout << b.toString() <<endl;
+    cout << a.toString() <<endl;
+
+    Time c = a.add(a) ; 
+    cout << c.toString() <<endl;
 
   
 
