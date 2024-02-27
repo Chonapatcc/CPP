@@ -10,13 +10,24 @@ using namespace std;
 class Time
 {
 private:
-    int hour, minute,second,duration;
+    int hour, minute,second;
 public:
-    Time(int hour, int minute, int second):hour(hour),minute(minute),second(second){}
+    Time(int hour, int minute, int second):hour(hour),minute(minute),second(second)
+    {
+    }
     
-    Time(int duration):duration(duration){}
-
-   
+    Time(int duration)
+    {
+        hour = duration/(60*60);
+        duration-= hour*60*60;
+        minute = duration/60;
+        duration-=minute*60;
+        second = duration;
+        if(hour>=24)
+        {
+            hour -=24;
+        }
+    }
 
     Time add(Time other)
     {
@@ -24,46 +35,75 @@ public:
         p->hour = hour+other.hour;
         p->minute = minute+other.minute;
         p->second = second+other.second;
-        p->hour%=24;
-        p->minute%=60;
-        p->second%=60;
+        if(p->second>=60)
+        {
+            p->minute+=1;
+            p->second-=60;
+        }
+        if(p->minute>=60)
+        {
+            p->hour+=1;
+            p->minute-=60;
+        }
+        if(p->hour>=24)
+        {
+            p->hour-=24;
+        }
         return *p;
     }
 
-    int	subtract(Time other) const
+    int subtract(Time other)
     {
         int dif = getDuration() - other.getDuration();
-        int m=23*60*60+59*60+60;
+        int m=24*60*60;
         if(dif<0)
         {
             dif+=m;
-        }
-        if(dif>m)
-        {
-            dif%=m;
         }
 
         return dif;
     }
 
-    int	equals(Time other) const
+    int	equals(Time other)
     {
-        int time1 = getDuration();
-        int time2 = other.getDuration();
-
-        return time1==time2;
+        int t1=getDuration();
+        int t2=other.getDuration();
+        
+        return t1==t2;
     }
 
-    string toString() const
+    string toString()
     {
         string str="";
-        stringstream x;
+        if(hour<10)
+        {
+            str+="0"+to_string(hour);
+        }
+        else
+        {
+            str+=to_string(hour);
+        }
+        str+=':';
+        if(minute<10)
+        {
+            str+='0'+to_string(minute);
+        }
+        else
+        {
+            str+=to_string(minute);
+        }
+        str+=':';
 
-        x << setw(2) << setfill('0') << hour;
-        x << ":"<< setw(2) << setfill('0') << minute;
-        x << ":"<< setw(2) << setfill('0') << second;
+        if(second<10)
+        {
+            str+='0'+to_string(second);
+        }
+        else
+        {
+            str+=to_string(second);
+        }
 
-        x>>str;
+
         return str;
     }
     //getter 
@@ -75,7 +115,7 @@ public:
     {
         return minute;
     }
-    int  getSecond() const
+    int getSecond() const
     {
         return second;
     }
@@ -87,24 +127,31 @@ public:
         return dur;
     }
 
-
-
+    // setter
+    void setHour(int h)
+    {
+        hour=h;
+    }
+    void setMinute(int m) 
+    {
+        minute = m;
+    }
+    void setSecond(int s)
+    {
+        second = s;
+    }
 
 };
 
 
 int main()
 {
-    Time a(12,12,12),b(01,01,01);
+    Time a(2,2,2),b(01,01,01);
 
-    cout << a.getDuration() << endl;
-    cout << b.getDuration() << endl;
-    cout << b.subtract(a) <<endl;
+    Time c(24*60*60);
+    cout << c.toString();
+    fflush(stdout);
 
-    cout << a.toString() <<endl;
-
-    Time c = a.add(a) ; 
-    cout << c.toString() <<endl;
 
   
 

@@ -1,40 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class Book
+int &cat(int n)
 {
-private:
-    string name;
-    string author;
-    int quantity;
-public:
-    Book(string n , string a)
-    {
-        name = n;
-        author =a;
-        quantity =10;
-    }
-    void Buy(int buy_quantity)
-    {
-        if(buy_quantity <=quantity)
-            quantity = quantity - buy_quantity;
-
-    }
-    int GetQuantity() const
-    {
-        return quantity;
-    }
-
-};
+    int *p;
+    *p = 10;
+    
+    return *p;
+}
 
 
 
 int main()
 {
-    Book c_book("C Programming","Dennis");
-    Book python_book("Python Cookbook","Brian");
+    int x = 50;
+    x= cat(x);
 
-    //c_book.quantity = 25;
-    c_book.Buy(5);
-    //Buy(c_book,5);
+    cout << x ;
 }
