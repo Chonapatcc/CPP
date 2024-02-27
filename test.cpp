@@ -1,20 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int &cat(int n)
+class Animal
 {
-    int *p;
-    *p = 10;
-    
-    return *p;
-}
+    int a =0 ;
 
+};
 
 
 int main()
 {
-    int x = 50;
-    x= cat(x);
+    Animal d;
 
-    cout << x ;
+    cout << d.a; 
 }
