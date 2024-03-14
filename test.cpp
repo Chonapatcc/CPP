@@ -8,22 +8,23 @@ private:
     int num ;
 
 public :
-    Animal(int age=0 , int num=0):age(age),num(num)
+    Animal(int age=0 , int num=0)
     {
+        age = age;
+        num = num;
     }
 
-    friend ostream& operator<<(ostream& out, Animal &o)
+    int getAge()
     {
-        return out;
+        return age;
     }
-
 
 };
 
 
 int main()
 {
-    Animal d;
+    Animal d=Animal(0,0);
 
-    cout << Animal d(0,0); 
+    cout <<d.getAge();
 }

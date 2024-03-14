@@ -95,29 +95,9 @@ public:
         return res;
     }
 
-    friend ostream& operator<<(ostream& output , Complex &act)
+    friend std::ostream& operator<<(ostream& output , Complex &act)
     {
-        if(act.real>0 or act.real<0)
-        {
-            output << to_string(act.real)+" + ";
-        }
-        if(act.imag>0 or act.imag<0)
-        {
-            if(act.imag==1)
-            {
-                output << "i";
-            }
-            else if(act.imag==-1)
-            {
-                output << "-i";
-            }
-            else
-            {
-                output <<  to_string(act.imag);
-            }
-
-        }
-        return output;
+        
     }   
 
 };
