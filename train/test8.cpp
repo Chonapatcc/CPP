@@ -6,5 +6,5 @@ int main()
 {
     char x = 'A';
     int num = 65;
-    cout << (char)num;
+    cout << char(num);
 }
