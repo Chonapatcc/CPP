@@ -3,7 +3,7 @@
         {
             "type": "cppbuild",
             "label": "C/C++: g++.exe build active file",
-            "command": "D:\\MSYS2\\mingw64\\bin\\g++.exe",
+            "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
@@ -26,7 +26,7 @@
         {
             "type": "cppbuild",
             "label": "C/C++: x86_64-w64-mingw32-gcc.exe build active file",
-            "command": "d:\\MSYS2\\mingw64\\bin\\x86_64-w64-mingw32-gcc.exe",
+            "command": "C:\\msys64\\ucrt64\\bin\\x86_64-w64-mingw32-gcc.exe",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
@@ -35,7 +35,7 @@
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
             "options": {
-                "cwd": "d:\\MSYS2\\mingw64\\bin"
+                "cwd": "C:\\msys64\\ucrt64\\bin"
             },
             "problemMatcher": [
                 "$gcc"
