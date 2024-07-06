@@ -5,10 +5,9 @@ using namespace std;
 
 int main()
 {
-    int a,b;
-    a = 2;
-    b = 3;
-    cout << (double ) (a/b);
+    string cat = ("cats");
+
+    cout << cat;
 
         
 
