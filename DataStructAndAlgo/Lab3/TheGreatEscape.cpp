@@ -4,130 +4,152 @@ class Node
 {
 public:
     int val;
-    Node *prev=NULL;
-    Node *next=NULL;
+    Node *prev;
+    Node *next;
 };
-Node * getInput()
-{
-    int inputNum;
-    Node *head = NULL;
-    Node *node = head;
 
+Node *createNewNode(int val)
+{
+    Node *newNode = new Node;
+    newNode->val = val;
+    newNode->prev = NULL;
+    newNode->next = NULL;
+
+    return newNode;
+}
+
+Node * isIn(Node *node , int val)
+{
     while(1)
     {
-        cin>>inputNum;
-        if(inputNum==0)
+        if(node==NULL)
         {
             break;
         }
-        Node *newNode = new Node;
-        newNode->val = inputNum;
-        if(node==NULL)
+        if(node->val ==val)
         {
+            return node;
+        }
+
+        node =node->next;
+    }
+    return NULL;
+}
+
+Node *getInput(int type)
+{
+    Node *head = NULL;
+    Node *node =head;
+    int num ;
+    int counter =0 ;
+    while(1)
+    {
+        cin>>num;
+        if(num==0)
+        {
+            break;
+        }
+        counter++;
+        
+        if(head==NULL)
+        {
+            Node *newNode = createNewNode(num);
             head = newNode;
             node = head;
         }
         else
         {
+
+            Node *newNode = createNewNode(num);
             node->prev = newNode;
             newNode->next = node;
+
             node = node->prev;
+            
+             
         }
     }
-    return node;
-}
-
-void printNode(Node *input)
-{
-    if(input!=NULL)
+    if(type)
     {
-        while(1)
-        {
-            cout << input->val <<" ";
-            if(input->next ==NULL)
-            {
-                cout << endl;
-                break;
-            }
-            input = input->next;
-        }
+        return node;
     }
-}
-
-Node * isIn(Node *save,int value)
-{
-    while(1)
+    else
     {
-        if(save!=NULL)
+        if (counter>=2)
         {
-            if(save->val ==value)
-            {
-                return save;
-            }
+            return node;
         }
         else
         {
             return NULL;
         }
-        save = save->next;
     }
 }
-
-
-void addNode(Node *startPos,int value)
+void printNode(Node *node)
 {
-    Node *newnode = new Node;
-    newnode->val = value;
-
-    newnode->prev = startPos;
-    if(startPos->next !=NULL)
+    while(1)
     {
-        startPos->next->prev = newnode;   
+        if(node==NULL)
+        {
+            cout << endl;
+            break;
+        }
+        cout << node->val <<" ";
+        node = node->next;
     }
-    newnode->next = startPos->next;
-    startPos->next= newnode;
-}
-void deleteNode(Node *node)
-{
-    node->prev->next =
 }
 int main()
 {
-    int lines;
-    cin>>lines;
-    Node *saveInput = getInput();
-    for(int i =1 ; i < lines ; i++)
+    int times ;
+    cin>>times;
+    if(times<=0)
     {
-        Node *input = getInput();
-        
-        if(input == NULL)
-        {
-            continue;
-        }
-
-        Node *startPos = isIn(saveInput,input->val);
-        if(startPos)
-        {
-            while(1)
+        return 0;
+    }
+    Node *save = getInput(1);
+    if(!save)
+    {
+        return 0;
+    }
+    // printNode(save);
+    for(int i=1 ; i<times ; i++)
+    {
+        Node *newNode = getInput(0);
+        if(newNode)
+        {   
+            Node *pos =isIn(save, newNode->val);
+            if(pos)
             {
-                input = input->next;
-                if(input==NULL)
+                while(1)
                 {
-                    break;
-                }
-                Node *checker = isIn(saveInput,input->val);
-                if(checker)
-                {
+                    newNode = newNode->next;
+
+                    if(newNode == NULL)
+                    {
+                        break;
+                    }
+                    if(!isIn(save, newNode->val))
+                    {
+
+                        Node *tempNode = createNewNode(newNode->val);
+                        Node *nextPos = pos->next;
+
+                        pos->next = tempNode;
+                        tempNode->prev = pos;
+
+                        if(nextPos)
+                        {
+                            tempNode->next = nextPos;
+                            nextPos->prev = tempNode;
+                        }
+                        pos = pos->next;
+                    }
 
                 }
-                // if(!checker)
-                // {
-                //     addNode(startPos,input->val);
-                // }
             }
             
         }
-        printNode(saveInput);
     }
-    
+    printNode(save);
+
 }
