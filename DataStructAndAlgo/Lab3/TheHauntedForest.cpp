@@ -1,129 +1,187 @@
 #include <iostream>
 using namespace std;
+
 class Player
 {
 public:
-    int index;
-    Player *left;
-    Player *right;
-    int checker;
+    Player *left,*right;
+    int num;
+    int ch;
+    
+    Player(int num) 
+    {
+        this->num = num; 
+        this->left = NULL;
+        this->right = NULL; 
+        this->ch = 1;
+    } 
 };
 
-Player *createPlayer()
+void printP(Player *p)
 {
-    Player *newPlayer = new Player();
-    
-    newPlayer->index = -1;
-    newPlayer->left = NULL;
-    newPlayer->right = NULL;
-    newPlayer->checker = 0 ;
-
-
-    return newPlayer;
-}
-
-Player *createPlayers(int num)
-{
-    Player *head = NULL;
-    Player *p=head;
-    if(num==0)
+    Player *save = p;
+    cout << p->num << "->" ; 
+    while(1)
     {
-        return NULL;
-    }
-    for(int i =0 ; i < num ;i++)
-    {
-        Player *newPlayer = createPlayer();
-        if(head==NULL)
+        p = p->right;
+        if(p == save)
         {
-            head= newPlayer;
-            p = head;
+            cout <<endl;
+            break;
         }
-        else
-        {
-            p->right = newPlayer;
-            newPlayer->left = p;
-            p = p->right;
-        }
+        cout << p->num << "->" ; 
+
     }
-    p->right = head;
-    head->left = p;
-    return head;
 }
 
 Player *isIn(Player *p,int index)
 {
-    Player *saveStart = p; 
-    if(p->index == index)
+    Player *start = p; 
+    if(p->num == index )
     {
         return p;
     }
     while(1)
     {
         p =p->right;
-        if(p==saveStart)
+        if(p == start)
         {
             return NULL;
         }
-        if(p->index==index)
+        if(p->num == index)
         {
             return p;
         }
     }
 }
 
-void printP(Player *p)
+void linkP(Player *p1,Player *p2)
 {
-    Player *saveID = p;
-    while(1)
-    {
-        cout << p->index <<"," <<p->checker << " ";
-        p = p->right;
-        if(p == saveID)
-        {
-            cout <<endl;
-            break;
-        }
-    }
+    //font,back
+    p1->right = p2;
+    p2->left = p1;
 }
 
-void addIndex(Player *pList, int index)
+void insertPFont(Player *p1,Player *p2)
 {
-    while(1)
-    {
-        if(pList->index==-1)
-        {
-            pList->index = index;
-            break;
-        }
-        pList = pList->right;
-    }
+    Player *p3 = p1->left;
+
+    linkP(p2,p1);
+    linkP(p3,p2);
 }
 
-void insertIndex(Player *pos, int index)
+void insertPBack(Player *p1,Player *p2)
 {
-    //add from back
-    int temp;
+    Player *p3 = p1->right;
 
-    while(1)
+    linkP(p1,p2);
+    linkP(p2,p3);
+}
+
+Player *getPlayer(int players)
+{
+    Player *head= NULL;
+    for(int i=0 ; i<players ; i++)
     {
-        pos = pos->right;
-
-        temp = pos->index;
-        pos->index = index;
-        index = temp;
-    
-        if(pos->index==-1)
+        int left,center = i,right;
+        cin>>left>>right;
+        if(head == NULL)
         {
-            pos->index = index;
-            break;
-        }  
+            Player *p1 = new Player(left);
+            Player *p2 = new Player(center);
+            Player *p3 = new Player(right);
+
+            linkP(p1,p2);
+            linkP(p2,p3);
+            linkP(p3,p1);
+            head = p1;
+        }
+        else
+        {
+            Player *p1 = isIn(head,left);
+            Player *p2 = isIn(head,center);
+            Player *p3 = isIn(head,right);
+
+            if(!p2)
+            {
+                p2 = new Player(center);
+                if(p1)
+                {
+                    insertPBack(p1,p2);
+                }
+                else if(p3)
+                {
+                    insertPFont(p3,p2);
+                }
+                else
+                {
+                    insertPFont(head,p2);
+                }
+            }
+            if(!p1)
+            {
+                if(p2)
+                {
+                    p1 = new Player(left);
+                    insertPFont(p2,p1);
+                }
+            }
+            if(!p3)
+            {
+                if(p2)
+                {
+                    p3 = new Player(right);
+                    insertPBack(p2,p3);
+                }
+            }
+
+            // if(!p1 and !p2 and !p3)
+            // {
+            //     Player *p1 = new Player(left);
+            //     Player *p2 = new Player(center);
+            //     Player *p3 = new Player(right);
+
+            //     linkP(p1,p2);
+            //     linkP(p2,p3);
+            //     linkP(p3,p1);
+            // can do if you give left , right = 1 =1 that is their true left and right
+            // }
+        }
     }
+    return head;
+}
+
+Player *getSurvivor(int survivors)
+{
+    Player *start = NULL;
+    Player *surv = NULL;
+    for(int i=0 ; i<survivors; i++)
+    {
+        int surNum;
+        cin>>surNum;
+        if(surv == NULL)
+        {
+            surv = new Player(surNum);
+            start =surv;
+            linkP(surv,surv);
+        }
+        else
+        {
+            if(!isIn(start,surNum))
+            {
+                Player *newP = new Player(surNum);
+                insertPBack(surv,newP);
+                surv = surv->right;
+            }
+        }
+    }
+    return start;
 }
 
 void resetChecker(Player *p)
 {
     Player *saveP = p;
-    p->checker = 1;
+    p->ch = 1;
     while(1)
     {
         p = p->right;
@@ -131,7 +189,7 @@ void resetChecker(Player *p)
         {
             break;
         }
-        p->checker = 1;
+        p->ch = 1;
     }
 }
 
@@ -139,7 +197,7 @@ Player *toNext(Player *p)
 {
     while(1)
     {
-        if(p->checker ==1 )
+        if(p->ch ==1 )
         {
             return p;
         }
@@ -159,106 +217,46 @@ Player* loopP(Player *p,int loops)
 
 int main()
 {
-    int yusha, survivor;
-    cin >> yusha >> survivor;
-    // if(yusha==survivor)
-    // {
-    //     cout << "NOT POSSIBLE";
-    //     return 0;
-    // }
-
-    Player *pList = createPlayers(yusha);
-    Player *survList = createPlayers(survivor);
+    int players,survivors;
+    cin>>players>>survivors;
+    Player *player = getPlayer(players);
+    Player *surv = getSurvivor(survivors);
     
-    for(int i =0 ; i<yusha;i++)
-    {
-        int pLeft , pCenter, pRight;
-        cin>>pLeft >> pRight;
-        pCenter = i ;
-        
-        Player *posLeft = isIn(pList,pLeft);
-        Player *posCenter = isIn(pList,pCenter);
-        Player *posRight = isIn(pList,pRight);
-
-        if(!posLeft and !posCenter and !posRight)
-        {
-            addIndex(pList,pLeft);
-            addIndex(pList,pCenter);
-            addIndex(pList,pRight);
-        }
-        else
-        {
-            if(posLeft)
-            {
-                if(!posCenter)
-                {
-                    insertIndex(posLeft,pCenter);
-                }
-                if(!posRight)
-                {
-                    insertIndex(posLeft->right,pRight);
-                }
-            }
-            else if(posCenter)
-            {
-                if(!posLeft)
-                {
-                    insertIndex(posCenter->left,pLeft);
-                }
-                if(!posRight)
-                {
-                    insertIndex(posCenter, pRight);
-                }
-            }
-            else if(posRight)
-            {
-                if(!posCenter)
-                {
-                    insertIndex(posRight->left, pCenter);
-                }
-                if(!posLeft)
-                {
-                    insertIndex(posRight->left->left,pLeft);
-                }
-            }
-        }
-    }
+    // printP(player);
+    // printP(surv);
     
-    for(int i =0 ;i<survivor;i++)
-    {
-        int num;
-        cin>>num;
-        addIndex(survList,num);
-    }
-
-    int startPos ;
+    int startPos;
     cin>>startPos;
 
-    int times = yusha - survivor ; 
-    int counter =0;
-
-    for(int i =0 ;i<=1000;i++)
+    // cout << startPos <<endl;
+    int time = players - survivors;
+    
+    if(time<=0)
     {
-        resetChecker(pList);
-        pList = isIn(pList,startPos);
-        // printP(pList);
-        int ch =1 ;
+        time =1;
+    }
 
-        for(int y =0 ;y<times;y++)
+    int counter = 0 ;
+    
+    for(int i =0 ; i<= 1000 ; i++)
+    {
+        resetChecker(player);
+        player = isIn(player,startPos);
+        int ch =1;
+        for(int y =0 ; y< time ;y++ )
         {
-            int loops = i%(yusha-y);
-            pList = loopP(pList,loops);
-            if(isIn(survList,pList->index))
+            int loop = i%(players-y);
+            player = loopP(player,loop);
+            if(isIn(surv,player->num))
             {
                 ch =0 ;
                 break;
             }
-            pList->checker = 0;
-            pList = pList->left;
-            pList = toNext(pList);
-            
+            player->ch = 0;
+            player = player->left; //just move to left;
+            player = toNext(player); //to next checker == 1;
         }
-        if(ch and times>0)
+        if(ch)
         {
             counter++;
             cout << i <<endl;
