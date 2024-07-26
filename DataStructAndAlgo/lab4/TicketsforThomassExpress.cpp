@@ -1,120 +1,124 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <stack>
+#include <queue>
 using namespace std;
 
-void miniPrintBottle(stack<string>bottle)
+void printBottle(stack<string> *bottle)
 {
-    if(bottle.empty())
+    if(!bottle->empty())
     {
-        return ;
-    }
-    
-    
-    string name = bottle.top();
-    bottle.pop();
-    miniPrintBottle(bottle);
-
-
-    cout << name << " ";
-
-}
-
-void printLine(queue<string> line)
-{
-    cout << "Remaining Tickets In The Line: ";
-
-    queue<string> copy = line;
-    while(!copy.empty())
-    {
-        string name = copy.front();
-        cout << name << " ";
-        copy.pop();
-    }
-
-}
-
-void printBottle(stack<string> bottle)
-{
-    cout << "Remaining Tickets In The Bottle: ";
-    miniPrintBottle(bottle);
-}
-
-int checker(string name,stack<string> bottle, queue<string>line)
-{
-    if(name=="e" or name =="E")
-    {
-        if(!bottle.empty())
+        string t = bottle->top();
+        bottle->pop();
+        
+        if(bottle->empty())
         {
-            string val = bottle.top();
-            bottle.pop();
-            line.push(val);
-            return 1;
+            cout << t;
+            return ;
         }
-        return 1;
-    }
-    else if(name=="d" or name =="D")
-    {
-        if(!line.empty())
+        else
         {
-            string val = line.front();
-            line.pop();
-            bottle.push(val);
-            return 1;
+
+            printBottle(bottle);
+            cout << " " << t; 
         }
-        return 1;
-    }
-    else if(name=="p" or name == "P")
-    {
-        printLine(line);
-        printBottle(bottle);
-        cout << "===================="<<endl;
-        return 1;
-
-    }
-    else if(name=="q" or name == "Q")
-    {
-        return 0;
-    }
-    else
-    {
-        cout << "Input Error" <<endl;
-        return 0;
-    }
-
+    }    
 }
 
-string arrayToString(char * a)
+void printLine(queue<string> *line)
 {
-    string t = "";
-    for(int i =0 ; i < strlen(a) ; i++)
+    if(!line->empty())
     {
-        t+=a[i];
+        string t = line->front();
+        cout << t;
+        line->pop();
+        if(!line->empty())
+        {
+            cout << " ";
+            printLine(line);
+        }
     }
-    return t;
 }
 
 int main()
 {
+    string text;
+    getline(cin,text);
+
     stack<string> bottle;
     queue<string> line;
-    char longText[101];
-    cin.getline(longText,101);
-    char *ptr;
-    ptr = strtok(longText," ");
-    while(ptr!=NULL)
+
+    //get input
+    stringstream s(text);
+    string t ;
+    while(s>>t)
     {
-        string t = arrayToString(ptr);
         bottle.push(t);
-        ptr = strtok(NULL," ");
     }
+
+
     while(1)
     {
-        string input;
+        string input ;
         cin>>input;
-        int ch = checker(input,bottle,line);
-        if(!ch)
+
+        if(input == "e" or input == "E")
+        {
+            if(!bottle.empty())
+            {
+                string t = bottle.top();
+                bottle.pop();
+                line.push(t);
+            }
+        
+        }
+        else if(input == "d" or input == "D")
+        {
+            if(!line.empty())
+            {
+                string t = line.front();
+                line.pop();
+                bottle.push(t);
+            }
+        }
+        else if(input == "p" or input == "P")
+        {
+            queue<string> copyLine = line;
+            cout << "Remaining Tickets In The Line: ";
+            if(copyLine.empty())
+            {
+                cout << "Line Is Empty";
+            }
+            else
+            {
+                printLine(&copyLine);
+            }
+            cout << endl;
+
+            stack<string> copyBottle = bottle;
+            cout << "Remaining Tickets In The Bottle: ";
+            if(copyBottle.empty())
+            {
+                cout << "Bottle Is Empty";
+            }
+            else
+            {
+                printBottle(&copyBottle);
+            }
+            cout << endl;
+
+            cout << "====================" <<endl ;
+        }
+        else if(input == "q" or input =="Q")
         {
             break;
         }
-
+        else
+        {
+            cout << "Input Error" <<endl;
+            break;
+        }
     }
+    
 }
