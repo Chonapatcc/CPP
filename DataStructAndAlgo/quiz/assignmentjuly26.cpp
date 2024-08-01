@@ -6,8 +6,6 @@ class Node
 public:
     Node *left,*right;
     int data;
-
-
 };
 
 Node *newNode(int data)
