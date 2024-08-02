@@ -18,17 +18,18 @@ void printArray(int arr[],int size)
     }
     cout << endl;
 }
-
 void recur(int *weightList,int *scoreList,int startId,int size,list<int> indexList,int maxWeight,int minScore , int weight,int score,double *count)
 {
     // cout << "cat" <<endl;
-    if(weight<=maxWeight and score>=minScore and !indexList.empty() and weight>0)
+    if(score>=minScore and weight<=maxWeight)
     {
-        printList(indexList);
+        if(!indexList.empty())
+        {
+            printList(indexList);
+        }
         (*count) ++;
         return;
     }
-
     for(int i=startId ; i < size ; i++)
     {
         if(weight + weightList[i] <=maxWeight)
@@ -51,11 +52,9 @@ int main()
 {
     int number,maxWeight,minScore;
     cin>>number>>maxWeight>>minScore;
-
     int weightList[number];
     int scoreList[number];
     list<int> indexList;
-    
     for(int i =0 ;i<number;i++)
     {
         int weight ;
@@ -68,19 +67,21 @@ int main()
         cin>>score;
         scoreList[i] = score;
     }
-
     // printArray(weightList,number);
     // printArray(scoreList,number);
     // printList(indexList);
-
     double all=0 ;
     for(int i= 0;i<=number;i++)
     {
         all+=factorial(number) / factorial(number-i) / factorial(i);
     }
     double count =0; 
-
+    if(0>=minScore)
+    {
+        count ++ ;
+    }
     recur(weightList,scoreList,0,number,indexList,maxWeight,minScore,0,0,&count);
+
     
     // cout << all << " " << count << endl;
     cout <<fixed<<setprecision(5)<< count/all << endl; 
