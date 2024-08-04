@@ -1,6 +1,6 @@
 import random
 
-times = random.randint(1,15)
+times = random.randint(15,15)
 print(times)
 
 n = random.randint(0,1000)

@@ -1,46 +1,49 @@
 #include <iostream>
-#include <list>
+#include <queue>
 #include <iomanip>
 using namespace std;
-void printList(list<int> lst)
+void printQueue(queue<int> q)
 {
-    for(list<int>::iterator i = lst.begin(); i != lst.end(); i++)
+    if(q.empty())
     {
-        cout << *i << " ";
-    }
-    cout << endl;
-}
-void printArray(int arr[],int size)
-{
-    for(int i =0 ;i<size;i++)
-    {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
-}
-void recur(int *weightList,int *scoreList,int startId,int size,list<int> indexList,int maxWeight,int minScore , int weight,int score,double *count)
-{
-    // cout << "cat" <<endl;
-    if(score>=minScore and weight<=maxWeight)
-    {
-        if(!indexList.empty())
-        {
-            printList(indexList);
-        }
-        (*count) ++;
         return;
     }
-    for(int i=startId ; i < size ; i++)
+    while(!q.empty())
     {
-        if(weight + weightList[i] <=maxWeight)
+        cout << q.front() << " ";
+        q.pop();
+    }
+    cout << endl;
+}
+void recur(int id,int num,int weight,int score,int maxWeight, int minScore,queue<int>weightQueue,queue<int>scoreQueue,long long int *count,queue<int> indexList)
+{
+    if(score>=minScore and weight<=maxWeight )
+    {
+        if(weight>0)
         {
-            list<int> newList(indexList);
-            newList.push_back(i);
-            recur(weightList,scoreList,i+1,size,newList,maxWeight,minScore,weight+weightList[i],score+scoreList[i],count);
+            printQueue(indexList);
+            (*count) ++;
+        }
+    }
+    if(weightQueue.empty() or scoreQueue.empty())
+    {
+        return ;
+    }
+    for (int i =id ; i<num;i++)
+    {
+        int weightNew = weightQueue.front();
+        int scoreNew = scoreQueue.front();
+        weightQueue.pop();
+        scoreQueue.pop();
+        if(weight+weightNew<=maxWeight)
+        {
+            queue<int>newIndexList(indexList);
+            newIndexList.push(i);
+            recur(i+1,num,weight+weightNew,score+scoreNew,maxWeight,minScore,weightQueue,scoreQueue,count,newIndexList);
         }
     }
 }
-int factorial(int number)
+long long int factorial(long long int number)
 {
     if (number==0 or number==1)
     {
@@ -48,42 +51,35 @@ int factorial(int number)
     }
     return number*factorial(number-1);
 }
+queue <int> getInput(int number)
+{
+    queue <int> q = queue<int>();
+    for(int i =0 ;i<number;i++)
+    {
+        int item ;
+        cin>>item;
+        q.push(item);
+    }
+    return q;
+}
 int main()
 {
     int number,maxWeight,minScore;
     cin>>number>>maxWeight>>minScore;
-    int weightList[number];
-    int scoreList[number];
-    list<int> indexList;
-    for(int i =0 ;i<number;i++)
-    {
-        int weight ;
-        cin>>weight;
-        weightList[i] = weight;
-    }
-    for(int i =0 ;i<number;i++)
-    {
-        int score ;
-        cin>>score;
-        scoreList[i] = score;
-    }
-    // printArray(weightList,number);
-    // printArray(scoreList,number);
-    // printList(indexList);
-    double all=0 ;
+    queue <int> weightQueue = getInput(number);
+    queue <int> scoreQueue = getInput(number);
+    // printQueue(weightQueue);
+    // printQueue(scoreQueue);
+    long long int all=0 ;
     for(int i= 0;i<=number;i++)
     {
         all+=factorial(number) / factorial(number-i) / factorial(i);
     }
-    double count =0; 
-    if(0>=minScore)
-    {
-        count ++ ;
-    }
-    recur(weightList,scoreList,0,number,indexList,maxWeight,minScore,0,0,&count);
-
-    
+    // cout << all;
+    long long int count =0; 
+    recur(0,number,0,0,maxWeight,minScore,weightQueue,scoreQueue,&count,queue<int>());
+    double result = (count*1.0)/all;
     // cout << all << " " << count << endl;
-    cout <<fixed<<setprecision(5)<< count/all << endl; 
-
+    // result = factorial(15);
+    cout <<fixed<<setprecision(5)<< result << endl; 
 }
