@@ -15,6 +15,14 @@ void printQueue(queue<int> q)
     }
     cout << endl;
 }
+// long long int factorial(long long int number)
+// {
+//     if (number==0 or number==1)
+//     {
+//         return 1;
+//     }
+//     return number*factorial(number-1);
+// }
 queue<int> getInput(int number)
 {
     queue <int> q = queue<int>();
@@ -51,9 +59,22 @@ int main()
     cin>>number>>maxWeight>>minScore;
     queue <int> weightQueue = getInput(number);
     queue <int> scoreQueue = getInput(number);
+    // printQueue(weightQueue);
+    // printQueue(scoreQueue);
+    // long long int all0=0 ;
+    // for(int i= 0;i<=number;i++)
+    // {
+    //     all0+=factorial(number) / factorial(number-i) / factorial(i);
+    // }
+    // cout << all;
     int all = 1;
     int count =0;
     recur(0,number,0,0,maxWeight,minScore,weightQueue,scoreQueue,&count,&all,queue<int>());
+    // cout << all0 << " " << all << " " << count << " " << count/all ;
+    // cout  << " " << all << " " << count << " " << count/all ;
+
     double result = (count*1.0)/all;
+    // cout << all << " " << count << endl;
+    // result = factorial(15);
     cout <<fixed<<setprecision(5)<< result << endl; 
 }
