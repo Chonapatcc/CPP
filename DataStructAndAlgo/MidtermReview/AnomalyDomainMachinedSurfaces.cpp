@@ -1,33 +1,32 @@
-#include <string>
-#include <vector>
 #include <iostream>
 using namespace std;
 int countSpace(string line)
 {
     int count= 0;
-    for(int i=0 ; i < line.length() ;i++)
+    for(int i=0 ; i < line.length();i++)
     {
-        if(line[i]== ' ')
+        if(line[i]== 'X')
         {
             count++;
         }
     }
-    return count;
+    return 25 - count;
 }
 int main()
 {
     int  num;
     while (cin >> num , num)
     {
-        vector<int> spaces(num);
+        int spaces[num];
         int minSpaces = -1;
         string line;
-        char temp = getchar();
-        for (int i = 0; i < num; ++i)
+        string temp ;
+        getline(cin,temp);
+        for (int i = 0; i < num; i++)
         {
-            getline(cin, line);
-            int spaceCount =countSpace(line);
-            // cout << line <<" " <<spaceCount << endl;
+            getline(cin,line);
+            int spaceCount = countSpace(line);
+            // cout << line << " " << spaceCount << endl;
             if(spaceCount < minSpaces || minSpaces == -1)
             {
                 minSpaces = spaceCount;
@@ -39,6 +38,6 @@ int main()
         {
             total += spaces[i] - minSpaces;
         }
-        cout << total << '\n';
+        cout << total << endl;
     }
 }

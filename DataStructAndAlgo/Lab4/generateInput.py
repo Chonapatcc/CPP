@@ -7,8 +7,8 @@ def generate_expression(max_depth=3):
 
     def generate_term(depth):
         if depth == 0:
-            # return str(random.randint(-1000000,1000001))
-            return str(random.randint(-10,11))
+            return str(random.randint(-1000000,1000001))
+            # return str(random.randint(-10,11))
 
         else:
             operator = random.choice(operators)

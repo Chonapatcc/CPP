@@ -10,20 +10,16 @@ int precedence(char t)
     {
         return 1;
     }
-
     if(t=='*' or t=='/')
     {
         return 2;
     }
-
     return 0;
 }
-
 string toPostfix(string t)
 {
     stack<char> st;
     string postfix = "";
-
     for (int i = 0; i < t.length(); i++) 
     {
         char c = t[i];
