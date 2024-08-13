@@ -1,8 +1,10 @@
 import random
 
-num = random.randint(2,20)
+# num = random.randint(2,20)
 
-print(num)
-for i in range(num):
-    x = random.randint(0,10)
-    print(x,end=" ")
+# print(num)
+# for i in range(num):
+#     x = random.randint(0,10)
+lst = "0 10000010 10000000000000000000000".split();
+for it in lst:
+    print(len(it))
