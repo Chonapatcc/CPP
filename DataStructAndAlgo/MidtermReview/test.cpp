@@ -14,10 +14,10 @@ int onesComplement(int num, int n) {
 }
 int toLog(string text)
 {
-    int num = log10(max(1,stoi(text)));
+    int num = log10(stoi(text));
     return num;
 }
 int main() {
-    cout << toLog("0000001");
+    cout << toLog("000000");
     return 0;
 }
