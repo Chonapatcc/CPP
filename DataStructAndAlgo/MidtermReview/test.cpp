@@ -1,23 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int onesComplement(int num, int n) {
-
-    bitset<8> b(12.25);
-    string x= b.to_string();
-    cout << x << "| "<<endl; 
-    // Invert all bits
-    b.flip();
-
-    // Convert back to integer
-    return b.to_ulong();
+bool cat(){
+   static int i = 0;
+   return i++ % 2 == 0;
 }
-int toLog(string text)
-{
-    int num = log10(stoi(text));
-    return num;
-}
-int main() {
-    cout << toLog("000000");
-    return 0;
+
+int main(){
+    unsigned int sign = 1; // Negative number
+    unsigned int sign_bit = sign << 31; // Result:
+    cout << sign_bit;
 }
