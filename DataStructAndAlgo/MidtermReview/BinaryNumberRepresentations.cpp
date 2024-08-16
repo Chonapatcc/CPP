@@ -1,127 +1,74 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-string toUnsigned(int number,bool type)
-{
-    if(type and number!=0)
-    {
-        return "Underflow";
+unsigned int floatToBinary32(float f) {
+    unsigned int sign = f < 0 ? 1 : 0;
+    f = abs(f);
+    if (f == 0) {
+        return sign << 31;
     }
-    bitset<8> b(number);
-    return b.to_string();
-}
-string toSigned(int number,bool type)
-{
-    bitset<7> b(number);
-    return b.to_string();
-}
-string toOneComplement(int number,bool type)
-{
-    bitset<8> b(number);
-    if(type)
-    {
-        b.flip();
-    }
-    return b.to_string();
-}
-string toTwoComplement(int number,bool type)
-{
-    if(type)
-    {
-        number-=1;
-    }
-    bitset<8> b(number);
-    if(type)
-    {
-        b.flip();
-    }
-    return b.to_string();
-}
-string floatToBinary(float number)
-{   
-    string text= "" ;
-    for(int i=0 ; i< 24 ; i ++)
-    {
-        number*=2;
-        if(number>=1)
-        {
-            text+= "1";
-            number-=1;
-        }
-        else
-        {
-            text+= "0";
-        }
-    }
-    return text;
-}
-int getExpo(float result)
-{
-    float num = result;
-    int expo = log10(num);
-    return expo;
-}
-string toFloatting(float number,bool type)
-{
-    string padZero = toUnsigned(0,0) ;
-    if (number == 0) {
-        string result = "0 " + padZero + " "+padZero+padZero+padZero+padZero+padZero;
-        return result.substr(0,34) ;
-    }
-    int exponent = 0;
-    while (number >= 2) {
-        number /= 2;
+    int exponent = 127;
+    while (f >= 2) {
+        f /= 2;
         exponent++;
     }
-    while (number < 1) {
-        number *= 2;
+    while (f < 1) {
+        f *= 2;
         exponent--;
     }
-    string mantissa = "";
-    float f= number-1;
+    unsigned int mantissa = 0;
+    f -= 1;
     for (int i = 0; i < 23; i++) {
         f *= 2;
-        if(f>=1)
-        {
-            f-=1;
-            mantissa+="1";
-        }
-        else
-        {
-            mantissa+="0";
-        }
+        mantissa = (mantissa << 1) | (f >= 1 ? 1 : 0);
+        f -= (f >= 1) ? 1 : 0;
     }
-    string expoText = toUnsigned(127+exponent,0);
-    mantissa += padZero+padZero+padZero;
-    mantissa = mantissa.substr(0,23);
-    string result = to_string(type)+ " " + expoText + " " + mantissa;
-    return result ;
+    unsigned int ieee754 = (sign << 31) | (exponent << 23) | mantissa;
+    return ieee754;
+}
+bool isFloat(float num) {
+    return num != static_cast<int>(num);
 }
 int main()
 {
     string input;
     getline(cin,input);
-    bool type = (input[0]=='-') ; //1 = -,0 = +; 
+    float num = stof(input);
+    unsigned int binary = floatToBinary32(num);
+    bitset<32> bits(binary);
+    string temp = bits.to_string();
+    string sign = input.find('-') !=-1? "1" : "0";
+    string exponent = temp.substr(0,8);
+    string expo = temp.substr(1,8);
+    string mantissa = temp.substr(9,23);
+    string iEEE754 = sign +" " + expo+" " + mantissa;
+    
+    if(!isFloat(num))
+    {
+        bitset<8> bits(abs(num));
+        string temp = bits.to_string();
+        string unsignedText = temp;
+        string signedText = sign + " " + temp.substr(1,7);
+        string oneComplementText = temp;
+        string twoComplementText = temp;
 
-    float num = abs(stod(input));
-    bool isFloat = !(num == int(num));
-    if(isFloat)
-    {
-        string floatting = toFloatting(num,type);
-        cout <<"IEEE 754: " <<  floatting << endl;
+        if(sign=="1")
+        {
+            unsignedText = "Underflow";
+            bits.flip();
+            string temp2 = bits.to_string();
+            oneComplementText = temp2;
+            if(num!=0)
+            {
+                bits = bitset<8> (abs(num+1));
+                bits.flip();
+                temp2 = bits.to_string();
+                twoComplementText = temp2;
+            }
+        }
+        cout << "Unsigned:         " <<unsignedText << endl;
+        cout << "Signed Magnitude: " <<signedText << endl;
+        cout << "1's Complement:   " <<oneComplementText << endl;
+        cout << "2's Complement:   " <<twoComplementText << endl;
     }
-    else
-    {
-        int number = int(num);
-        string unsign = toUnsigned(number,type);
-        string sign = to_string(type) + " " +toSigned(number,type);
-        string oneComp = toOneComplement(number,type);
-        string twoComp = toTwoComplement(number,type);
-        string floatting = toFloatting(number,type);
-        cout <<"Unsigned:         " << unsign << endl;
-        cout <<"Signed Magnitude: " << sign << endl;
-        cout <<"1's Complement:   " <<  oneComp << endl;
-        cout <<"2's Complement:   " <<  twoComp << endl;
-        cout <<"IEEE 754: " <<  floatting << endl;
-    }
+    cout << "IEEE 754: " << iEEE754;
 }

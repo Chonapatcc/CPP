@@ -5,6 +5,6 @@ import random
 # print(num)
 # for i in range(num):
 #     x = random.randint(0,10)
-lst = "0 01111011 10011001100110011001100".split();
+lst = "1 00000000 00000000000000000000000".split();
 for it in lst:
     print(len(it))
