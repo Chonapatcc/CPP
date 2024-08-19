@@ -1,64 +1,58 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <iomanip>
 using namespace std;
 
-void recur(vector<vector<vector<int>>> &cube,int n,int x,int y,int z,int intense)
+void printCube(const vector<vector<vector<double>>>& cube,int n)
 {
-    int check = (x>=0 and x<n) and (y>=0 and y<n) and ( z>=0 and z<n);
-    if(!check)
+    for (int x = 0; x < n; x++) 
     {
-        return ;
-    }
-    if(cube[x][y][z] < intense)
-    {
-        cube[x][y][z] = intense;
-    }
-    else
-    {
-        return ;
-    } 
-    if(intense-1>0)
-    {
-        intense -=1;
-        int w[3] = {0,-1,1};
-        for(int i1=0 ; i1<3; i1++)
+        for (int y = 0; y < n; y++) 
         {
-            for(int i2 =0 ;i2<3;i2++)
+            for (int z = 0; z < n; z++) 
             {
-                for(int i3 =0 ;i3<3;i3++)
-                {
-                    recur(cube,n,x+w[i1],y+w[i2],z+w[i3],intense);
-                }
+                cout << cube[x][y][z] << " ";
+            }
+            cout << endl;
+        }
+        cout << endl;
+    }
+}
+
+void recur(vector<vector<vector<double>>>& cube,int n,int x,int y,int z,double intensity)
+{
+    if (x < 0 || x >= n || y < 0 || y >= n || z < 0 || z >= n || intensity <= 0 || intensity <= cube[x][y][z] ) 
+    {
+        return;
+    }
+    cube[x][y][z] = intensity;
+    for (int i = -1; i < 2; i++) 
+    {
+        for (int j = -1; j < 2; j++) 
+        {
+            for (int k = -1; k < 2; k++) 
+            {
+                recur(cube,n,x + i,y + j,z + k,intensity - 1);
             }
         }
     }
 }
 
-void printArr(vector<vector<vector<int>>> cube , int n)
-{
-    for(int i=0 ; i < n ; i++)
-    {
-        for(int j=0 ; j < n ; j++)
-        {
-            for(int k=0 ; k < n ; k++)
-            {
-                cout << cube[i] [j] [k] << " ";
-            }
-            cout << endl;
-        }
-        if(i<n-1)
-        {
-            cout << endl;
-        }
-    }
-}
-int main()
-{
+int main() {
     int n;
-    cin>>n;
-    int x,y,z , intense;
-    cin>>x>>y>>z;
-    cin>>intense;
-    vector<vector<vector<int>>> cube(n, vector<vector<int>>(n, vector<int>(n, 0)));
-    recur(cube,n,x,y,z,intense);    
-    printArr(cube,n);
+    cin >> n;
+
+    vector<vector<vector<double>>> cube(n, vector<vector<double>>(n, vector<double>(n, 0)));
+    int x, y, z;
+    double intensity;
+    string line;
+
+    while(getline(cin,line) and line!="end")
+    {
+        stringstream ss(line);
+        ss >> x >> y >> z >> intensity;
+        recur(cube,n,x,y,z,intensity);
+    }
+    printCube(cube,n);
+    return 0;
 }

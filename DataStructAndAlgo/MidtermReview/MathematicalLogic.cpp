@@ -1,56 +1,52 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <stack>
+#include <vector>
 using namespace std;
+bool isOperator(string c) {
+    return (c == "~" || c == "/\\" || c == "\\/" || c == "->" || c == "<->");
+}
 
-int main()
-{
+bool evaluate(bool a, bool b, string op) {
+    if(op == "~") return !b;
+    else if (op == "/\\") return a && b;
+    else if (op == "\\/")  return a || b;
+    else if ( op == "->") return !(a and not b);
+    else if ( op ==  "<->") return a == b;
+    return false; 
+}
+
+int main() {
     int n;
-    cin>>n;
-    int arr[n]; // 1 true 0 /false
-    for(int i= 0; i<n;i++)
-    {
-        string ch ;
-        cin>>ch;
-        arr[i] = (ch=="T"?1:0);
+    cin >> n;
+    vector<bool> truthValues(26);
+    for (int i = 0; i < n; ++i) {
+        char value;
+        cin >> value;
+        truthValues[i] = (value == 'T');
     }
-    string x ;
-    stack <int> st;
-    while(cin>>x)
+    string c;
+    stack<bool> s;
+    while(cin>>c and c!="end")
     {
-        if(x=="end")
+        if (isalpha(c[0])) 
         {
-            break;
-        }
-        if(x == "/\\")
+            s.push(truthValues[c[0] - 'A']); 
+        } 
+        else if (isOperator(c)) 
         {
-            //and
-            int n2 = st.top();
-            st.pop();
-            int n1 = st.top();
-            st.pop();
-            st.push(n1&n2);
-        }
-        else if(x=="\\/")
-        {
-            //or
-            int n2 = st.top();
-            st.pop();
-            int n1 = st.top();
-            st.pop();
-            st.push(n1|n2);
-        }
-        else if(x=="~")
-        {
-            int x = st.top();
-            st.pop();
-            x = !x;
-            st.push(x);
-        }
-        else
-        {
-            int id = x[0]-65;
-            st.push( arr[id]) ;
-        }
+            if (c == "~") 
+            {
+                bool b = s.top(); s.pop();
+                s.push(evaluate(false, b, c));
+            } 
+            else 
+            { 
+                bool b = s.top(); s.pop();
+                bool a = s.top(); s.pop();
+                s.push(evaluate(a, b, c));
+            }
+        } 
     }
-    string tp = st.top()? "T":"F";
-    cout << tp << endl;
+    cout << (s.top() ? 'T' : 'F') << endl;
+    return 0;
 }
