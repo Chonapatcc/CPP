@@ -1,49 +1,41 @@
-#include <iostream>
-#include <sstream>
-#include <vector>
+#include <bits/stdc++.h>
 using namespace std;
-class Person
-{
-public:
-    string name;
-    string houseNO;
 
-    Person(string name,string houseNO)
-    {
-        this->name = name;
-        this->houseNO = houseNO;
-    }
-};
-
-void linearSearch(vector<Person> &v,string find)
+void search(vector<string> &nameArr,vector<string> &NOArr,string find)
 {
-    for(auto i:v)
+    int size=  nameArr.size();
+    for(int i =0 ; i<size; i ++)
     {
-        if(i.name ==find)
+        if(nameArr[i] == find )
         {
-            cout << i.houseNO <<endl;
+            cout << NOArr[i] <<endl;
             return;
         }
     }
     cout << "Contact not found." <<endl;
-    return ;
 }
+
 int main()
 {
     string line;
-    vector<Person> v;
+    vector <string> nameArr;
+    vector <string> NOArr;
     while(getline(cin,line) and line !="-------------------------")
     {
         string name;
-        string houseNO;
+        string NO;
         stringstream s(line);
-        s>>name>>houseNO;
-        Person *p = new Person(name,houseNO);
-        v.push_back(*p);
-        // cout<<name<<" "<<houseNO<<endl;
+        s>>name>>NO;
+        // cout << name << endl;
+        // cout << NO <<endl;
+        nameArr.push_back(name);
+        NOArr.push_back(NO);
     }
+
+
     while(getline(cin,line))
     {
-        linearSearch(v,line);
+        // cout << line <<endl;
+        search(nameArr,NOArr,line);
     }
 }

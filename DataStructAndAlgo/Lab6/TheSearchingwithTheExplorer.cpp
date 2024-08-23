@@ -2,132 +2,126 @@
 using namespace std;
 int linearSearch(vector<int> &v,int find)
 {
-    int counter =0 ;
-    for(auto i:v)
+    int size= v.size();
+    int time =0 ;
+    for(int i =0 ; i<size; i++)
     {
-        counter++;
-        if(i ==find)
-        {
-            return counter;
-        }
-    }
-    return -1;
-}
-int sentinelLinearSearch(vector<int> &v,int find)
-{
-    int counter =0 ; 
-    int size = v.size();
-    for(int i = size-1 ; i>=0 ; i--)
-    {
-        counter ++ ;
+        time++;
         if(v[i] == find)
         {
-            return counter;
+            return time;
         }
     }
     return -1;
 }
+int sentinelSearch(vector<int> &v,int find)
+{
+    int size= v.size();
+    int time =0 ;
+    for(int i =0 ; i<size; i++)
+    {
+        time++;
+        if(v[size-i-1] == find)
+        {
+            return time;
+        }
+    }
+    return -1;
+}
+
 int binarySearch(vector<int> &v,int find)
 {
-    int counter =0;
-    int low=0;
-    int high=v.size()-1;
+    int time =0 ;
+    int low =0;
+    int high = v.size()-1;
     while(low<=high)
     {
         int mid = (low+high)/2;
-        counter++;
+        time++;
         if(v[mid] == find)
         {
-            return counter;
+            return time;
         }
-        else if(v[mid]<find)
+        else if(v[mid] > find)
         {
-            low = mid+1;
+            high = mid-1;
         }
         else
         {
-            high = mid-1;
+            low = mid+1;
         }
     }
     return -1;
 }
-void sortArr(vector<int> &v)
+void sort(vector<int> &v)
 {
     int size= v.size();
-    for(int i =0;i<size-1;i++)
+    for(int i =0 ; i<size; i++)
     {
-        for(int y =i+1 ;y<size-1 ; y++)
+        for(int y=i+1 ; y<size; y++)
         {
-            if(v[i]>v[y])
+            if(v[i] > v[y])
             {
-                int temp = v[i];
-                v[i] = v[y];
-                v[y] = temp;
+                swap(v[i],v[y]);
             }
         }
     }
 }
-void printArr(vector<int> &v)
-{
-    for(auto i:v)
-    {
-        cout<<i<<" ";
-    }
-    cout<<endl;
-}
+
 int main()
 {
+
     string line;
     getline(cin,line);
     stringstream s(line);
     int num;
-    vector <int> v;
+    vector<int> v;
     while(s>>num)
     {
         v.push_back(num);
     }
+
     int find;
-    cin>> find;
+    cin>>find;
     
     int linear = linearSearch(v,find);
-    int sentinel = sentinelLinearSearch(v,find);
-    sortArr(v);
-    // printArr(v);
+    int sentiment = sentinelSearch(v,find);
+    sort(v);
     int binary = binarySearch(v,find);
-
-    if(linear == -1 and sentinel == -1 and binary == -1)
+    int m = min(linear,min(sentiment,binary));
+    
+    if(sentiment==-1 and linear==-1 and binary==-1)
     {
-        cout<<"Not Found";
+        cout << "Not Found" <<endl;
     }
     else
     {
-        int m = min(linear,min(sentinel,binary));
-        string tp = "";
-        if(m == linear)
+        string tp="";
+        if(linear == m)
+        {
+            tp+="Linear";
+        }
+        if(sentiment == m)
         {
             if(tp!="")
             {
-                tp += " ";
+                tp+=" ";
             }
-            tp += "Linear";
+            tp+="Sentinel";
         }
-        if(m == sentinel)
+        if(binary == m)
         {
             if(tp!="")
             {
-                tp += " ";
+                tp+=" ";
             }
-            tp += "Sentinel";
+            tp+="Binary";
+            
         }
-        if(m == binary)
+        if(tp!="")
         {
-            if(tp!="")
-            {
-                tp += " ";
-            }
-            tp += "Binary";
+            cout<<tp<<endl;
+            cout<< m <<endl;
         }
-        cout << tp <<endl;
-        cout << m <<endl;
     }
 }
