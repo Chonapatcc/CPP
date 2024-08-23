@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <sstream>
 using namespace std;
 
 void search(vector<string> &nameArr,vector<string> &NOArr,string find)
@@ -14,7 +16,6 @@ void search(vector<string> &nameArr,vector<string> &NOArr,string find)
     }
     cout << "Contact not found." <<endl;
 }
-
 int main()
 {
     string line;
@@ -26,16 +27,11 @@ int main()
         string NO;
         stringstream s(line);
         s>>name>>NO;
-        // cout << name << endl;
-        // cout << NO <<endl;
         nameArr.push_back(name);
         NOArr.push_back(NO);
     }
-
-
     while(getline(cin,line))
     {
-        // cout << line <<endl;
         search(nameArr,NOArr,line);
     }
 }

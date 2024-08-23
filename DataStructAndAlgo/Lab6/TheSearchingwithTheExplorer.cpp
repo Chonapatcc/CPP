@@ -1,4 +1,6 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <sstream>
 using namespace std;
 int linearSearch(vector<int> &v,int find)
 {
@@ -28,7 +30,6 @@ int sentinelSearch(vector<int> &v,int find)
     }
     return -1;
 }
-
 int binarySearch(vector<int> &v,int find)
 {
     int time =0 ;

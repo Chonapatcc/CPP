@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-
 using namespace std;
 
 int main() {
@@ -15,7 +14,7 @@ int main() {
     int right = n - 1;
     while (left <= right) 
     {
-        int mid = left + (right - left) / 2;
+        int mid = (left + right) / 2;
         if (spectrum[mid] == mid + 1)
         {
             left = mid + 1;
