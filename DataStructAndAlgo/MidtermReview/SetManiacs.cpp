@@ -16,6 +16,12 @@ void printSet(const set<int>& s)
     }
     cout << "}" <<endl;
 }
+
+int recur(string text)
+{
+    
+
+}
 int main()
 {
     set<int> arrSave[3];
@@ -37,3 +43,14 @@ int main()
     printSet(arrSave[1]);
     printSet(arrSave[2]);
 }
+
+/*
+A = {0, 1, 2, 3} 
+B = {4} 
+C = {1, 2, 0}
+--- 
+union(A, B) 
+intersection(A, B) 
+complement(A) 
+difference(B, complement(A)) 
+*/
