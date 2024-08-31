@@ -1,182 +1,287 @@
 #include <iostream>
 #include <vector>
 #include <list>
-
 using namespace std;
 
-void printArr(const vector<vector<int>>& arr, string type,vector <int> &status) {
+int findIndex(vector<int> lst,int find)
+{
+    for(int i= 0 ; i<lst.size(); i++)
+    {
+        if(lst[i] == find)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int checkIsIn(vector<list<int>> adj,int find,int index)
+{
+    for(auto it = adj[index].begin(); it!=adj[index].end();it++)
+    {
+        if(*it == find)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+int findMaxVal(vector<int> lst)
+{
+    int m =-1 ;
+    for(int i= 0; i< lst.size(); i++)
+    {
+        if(lst[i]!=-1)
+        {
+            if(lst[i]>m)
+            {
+                m = lst[i];
+            }
+        }
+    }
+    return m;
+}
+int main() {
+    string type;
+    cin >> type;
+    int numVertices;
+    cin >> numVertices;
+
     if(type == "Matrix")
     {
-        cout << "  ";
-        for (int i = 0; i < arr.size(); ++i) 
+        vector<vector<int>> adjMatrix(numVertices, vector<int>(numVertices, 0));
+        vector<int> lst(numVertices,-1);
+        for(int i=0 ; i<numVertices; i++)
         {
-            if(status[i])
-            {
-                cout << " " <<i;
-            }
+            lst[i] = i;
         }
-        cout << endl;
-        
-        for (int i = 0; i < arr.size(); ++i) 
+
+        char command;
+        while(cin>>command)
         {
-            if(status[i])
+            if(command == 'e')
             {
-                cout << i;
-                for (int y = 0; y < arr.size(); ++y) 
+                int a,b;
+                cin>>a>>b;
+                if(a==b)
                 {
-                    if(arr[i][y])
-                    {
-                        cout << " "<<y;
-                    }
+                    continue;
                 }
-                cout << endl;
-            }
-        }
-    }
-    else if(type == "List")
-    {
-        for (int i = 0; i < arr.size(); ++i) 
-        {
-            if(status[i])
-            {
-                cout << "[" << i << "] -> ";
-                for (int y = 0; y < arr.size(); ++y) 
+                int index1 = findIndex(lst,a),index2 = findIndex(lst,b);
+                if(index1!=-1 and index2!=-1)
                 {
-                    if(arr[i][y])
+                    adjMatrix[index1][index2] = 1;
+                }
+            }
+            else if(command == 'r')
+            {
+                int a,b;
+                cin>>a>>b;
+                int index1 = findIndex(lst,a),index2 = findIndex(lst,b);
+                if(index1!=-1 and index2!=-1)
+                {
+                    adjMatrix[index1][index2] = 0;
+                }
+            }
+            else if(command == 'v')
+            {
+                lst.push_back(findMaxVal(lst)+1);
+                adjMatrix.push_back(vector<int>(numVertices,0));
+                numVertices++;
+                for(int i=0;i<numVertices;i++)
+                {
+                    adjMatrix[i].push_back(0);
+                }
+            }
+            else if(command == 'u')
+            {
+                int a;
+                cin>>a;
+                int index = findIndex(lst,a);
+                if(index!=-1)
+                {
+                    lst.erase(lst.begin()+index);
+                    for(int i=0;i<numVertices;i++)
                     {
-                        for (int j = 0; j < arr[i].size(); ++j) 
+                        adjMatrix[i].erase(adjMatrix[i].begin()+index);
+                    }
+                    adjMatrix.erase(adjMatrix.begin()+index);
+                    numVertices --;
+                }
+            }
+            else if(command == 'p')
+            {
+                if(numVertices<=0)
+                {
+                    cout << "====================" <<endl;
+                    continue;
+                }
+                cout << " " ;
+                for(int i= 0 ; i<numVertices; i++)
+                {
+                    cout << " " << lst[i];
+                }
+                cout <<endl;
+                for(int i=0;i<numVertices;i++)
+                {
+                    cout << lst[i] << " ";
+                    for(int y =0 ;y<numVertices;y++)
+                    {
+                        cout<<adjMatrix[i][y]<<" ";
+                    }
+                    cout<<endl;
+                }
+                cout << "====================" <<endl;
+            }
+            else if(command == 'q')
+            {
+                int maxIndegree = -1 ;
+                int maxInName = -1;
+                int maxOutdegree = -1 ;
+                int maxOutName = -1;
+
+                for(int i=0 ; i< numVertices; i ++)
+                {
+                    int count1 =0;
+                    int count2 =0;
+                    for(int y=0 ;y<numVertices;y++)
+                    {
+                        if(adjMatrix[y][i] == 1)
                         {
-                            cout << arr[i][j] << " ->";
+                            count1++;
                         }
-                        cout << endl;
+                        if(adjMatrix[i][y] == 1)
+                        {
+                            count2++;
+                        }
+                    }
+                    if(count1 > maxIndegree or maxIndegree == -1)
+                    {
+                        maxIndegree = count1;
+                        maxInName = lst[i];
+                    }
+                    if(count2 > maxOutdegree or maxOutdegree == -1)
+                    {
+                        maxOutdegree = count2;
+                        maxOutName = lst[i];
                     }
                 }
-                cout << "NULL" << endl;
+                cout << "Maximum In-Degree  : Vertex " << maxInName << " " << maxIndegree << endl;
+                cout << "Maximum Out-Degree : Vertex " << maxOutName << " " << maxOutdegree << endl;
+                break;
             }
         }
-    }
-    cout << "====================" <<endl;
-}
-
-void printList(const vector<list<int>>& adjList) {
-    
-}
-
-pair<int, int> findMaxDegrees(const vector<vector<int>>& matrix) {
-    int maxInDegree = 0, maxOutDegree = 0;
-    int maxInVertex = 0, maxOutVertex = 0;
-
-    for (int i = 0; i < matrix.size(); ++i) {
-        int inDegree = 0, outDegree = 0;
-        for (int j = 0; j < matrix[i].size(); ++j) {
-            if (matrix[i][j]) {
-                ++outDegree;
-            }
-            if (matrix[j][i]) {
-                ++inDegree;
-            }
-        }
-
-        if (inDegree > maxInDegree) {
-            maxInDegree = inDegree;
-            maxInVertex = i;
-        }
-
-        if (outDegree > maxOutDegree) {
-            maxOutDegree = outDegree;
-            maxOutVertex = i;
-        }
-    }
-
-    return make_pair(maxInVertex, maxOutVertex);
-}
-
-
-
-int main() 
-{
-    string type;
-    int numVertices;
-    cin >> type >> numVertices;
-    //create graph
-    vector<vector<int>> arr(10, vector<int>(10, 0));
-    vector<int> status(10,0);
-    for(int i =0  ; i<numVertices ; i++)
+    }   
+    else
     {
-        status[i] = 1;
-    }
+        vector<list<int>> adjMatrix(numVertices, list<int>(0, 0));
+        vector<int> lst(numVertices,-1);
+        for(int i=0 ; i<numVertices; i++)
+        {
+            lst[i] = i;
+        }
 
-    char command;
-    while (cin >> command) 
-    {
-        if (command == 'e')
+        char command;
+        while(cin>>command)
         {
-            int a, b;
-            cin >> a >> b;
-            arr[a][b] = 1;
-        } 
-        else if (command == 'r') 
-        {
-            int a, b;
-            cin >> a >> b;
-            arr[a][b] = 0;
-        
-        } 
-        else if (command == 'v') 
-        {
-            numVertices++;
-            status[numVertices-1] = 1; 
-        } 
-        else if (command == 'u') 
-        {
-            int a;
-            cin>>a;
-            status[a] =0;
-            if (a == numVertices -1)
+            if(command == 'e')
             {
-                numVertices--;
+                int a,b;
+                cin>>a>>b;
+                if(a==b)
+                {
+                    continue;
+                }
+                int index1 = findIndex(lst,a);
+                if(index1!=-1)
+                {
+                    if(b>=0 and b<=findMaxVal(lst) and checkIsIn(adjMatrix,b,index1) == 0)
+                        adjMatrix[index1].push_back(b);
+                }
             }
-        } 
-        else if (command == 'p') 
-        {
-            printArr(arr,type,status);
-        } 
-        else if (command == 'q') 
-        {
-            pair<int, int> maxDegrees = findMaxDegrees(arr);
-            cout << "Maximum In-Degree : Vertex " << maxDegrees.first << " " << maxDegrees.first << endl;
-            cout << "Maximum Out-Degree: Vertex " << maxDegrees.second << " " << maxDegrees.second << endl;
-        }
+            else if(command == 'r')
+            {
+                int a,b;
+                cin>>a>>b;
+                int index1 = findIndex(lst,a),index2 = findIndex(lst,b);
+                if(index1!=-1)
+                {
+                    if(checkIsIn(adjMatrix,b,index1) == 1)
+                        adjMatrix[index1].remove(b);
+                }
+            }
+            else if(command == 'v')
+            {
+                lst.push_back(findMaxVal(lst)+1);
+                adjMatrix.push_back(list<int>(0,0));
+                numVertices++;
+            }
+            else if(command == 'u')
+            {
+                int a;
+                cin>>a;
+                int index = findIndex(lst,a);
+                if(index!=-1)
+                {
+                    lst.erase(lst.begin()+index);
+                    for(int i=0;i<numVertices;i++)
+                    {
+                        if(checkIsIn(adjMatrix,a,i) == 1)
+                            adjMatrix[i].remove(a);
+                    }
+                    adjMatrix.erase(adjMatrix.begin()+index);
+                    numVertices --;
+                }
+            }
+            else if(command == 'p')
+            {
+                for(int i=0;i<numVertices;i++)
+                {
+                    cout << "[" << lst[i] << "] -> ";
+                    for(auto it = adjMatrix[i].begin(); it!=adjMatrix[i].end();it++)
+                    {
+                        cout << *it << " -> ";
+                    }
+                    cout << "NULL" << endl;
+                }
+                cout << "====================" <<endl;
+            }
+            else if(command == 'q')
+            {
+                int maxIndegree = -1 ;
+                int maxInName = -1;
+                int maxOutdegree = -1 ;
+                int maxOutName = -1;
 
+                for(int i=0 ; i< numVertices; i ++)
+                {
+                    int count1 =0;
+                    int count2 =adjMatrix[i].size();
+                    for(int y=0 ;y<numVertices;y++)
+                    {
+                        if(checkIsIn(adjMatrix,lst[i],y) == 1)
+                        {
+                            count1++;
+                        }
+                    }
+                    if(count1 > maxIndegree or maxIndegree == -1)
+                    {
+                        maxIndegree = count1;
+                        maxInName = lst[i];
+                    }
+                    if(count2 > maxOutdegree or maxOutdegree == -1)
+                    {
+                        maxOutdegree = count2;
+                        maxOutName = lst[i];
+                    }
+                }
+                cout << "Maximum In-Degree  : Vertex " << maxInName << " " << maxIndegree << endl;
+                cout << "Maximum Out-Degree : Vertex " << maxOutName << " " << maxOutdegree << endl;
+                break;
+            }
+        }       
     }
+    
+
+    return 0;
 }
-
-    // else if (representationType == "List") {
-    //     vector<list<int>> adjList(numVertices);
-
-    //     char command;
-    //     while (cin >> command) {
-//              else if (command == 'v') {
-    //             adjList.emplace_back();
-    //         } else if (command == 'u') {
-    //             int a;
-    //             cin >> a;
-    //             adjList.erase(adjList.begin() + a);
-    //             for (auto& list : adjList) {
-    //                 list.remove(a);
-    //             }
-    //         } else if (command == 'q') {
-    //             vector<vector<int>> matrix(adjList.size(), vector<int>(adjList.size(), 0));
-    //             for (int i = 0; i < adjList.size(); ++i) {
-    //                 for (int neighbor : adjList[i]) {
-    //                     matrix[i][neighbor] = 1;
-    //                 }
-    //             }
-
-    //             pair<int, int> maxDegrees = findMaxDegrees(matrix);
-    //             cout << "Maximum In-Degree : Vertex " << maxDegrees.first << " " << maxDegrees.first << endl;
-    //             cout << "Maximum Out-Degree: Vertex " << maxDegrees.second << " " << maxDegrees.second << endl;
-    //         }
-    //     }
-    // }
-    // return 0;
