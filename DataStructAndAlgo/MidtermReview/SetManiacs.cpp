@@ -89,7 +89,7 @@ int main()
     
     string line;
     int maxVal = 0;
-    vector<set<int>> arrSave(3,set<int>());
+    vector<set<int>> arrSave(27,set<int>());
     while (getline(cin, line) && line != "---") {
         stringstream ss(line);
         char name, eq, ob, cb;
@@ -98,10 +98,12 @@ int main()
         int num;
         while (ss >> num) {
             arrSave[id].insert(num);
+            arrSave['U'-'A'].insert(num);
             maxVal = max(maxVal, num);
             ss >> cb;
         }
     }
+    arrSave['U'-'A'] = getComplement(arrSave['U'-'A'],maxVal);
     // printSet(arrSave[0]);
     // printSet(arrSave[1]);
     // printSet(arrSave[2]);
