@@ -63,10 +63,6 @@ int main() {
             {
                 int a,b;
                 cin>>a>>b;
-                if(a==b)
-                {
-                    continue;
-                }
                 int index1 = findIndex(lst,a),index2 = findIndex(lst,b);
                 if(index1!=-1 and index2!=-1)
                 {
@@ -188,10 +184,6 @@ int main() {
             {
                 int a,b;
                 cin>>a>>b;
-                if(a==b)
-                {
-                    continue;
-                }
                 int index1 = findIndex(lst,a);
                 if(index1!=-1)
                 {
