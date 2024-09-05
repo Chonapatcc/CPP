@@ -1,8 +1,11 @@
-#include <iostream>
-#include <vector>
-
+#include <bits/stdc++.h>
+#include <chrono>
 using namespace std;
-int minTime =-1;
+
+
+int minTime = -1;
+vector<int> timeSave;
+vector<vector<int>> adj;
 const int MINUTES_PER_HOUR = 60;
 const int HOURS_PER_DAY = 24;
 const int DAYS_PER_MONTH = 30;
@@ -11,94 +14,16 @@ int n, t;
 int dx[] = {-1, 1, 0, 0};
 int dy[] = {0, 0, -1, 1};
 
-void printGraph(vector<vector<bool>> &adj)
+void printGraph(vector<vector<int>> &adj)
 {
-    int size = n;
-
-    cout << " " ;
-    for(int i= 0 ; i<size; i++)
+    for(int i =0 ; i<n ; i++)
     {
-        cout << " " << i;
-    }
-    cout <<endl;
-    for(int i=0;i<size;i++)
-    {
-        cout << i << " ";
-        for(int y =0 ;y<size;y++)
+        cout << i <<" "  ;
+        for(auto it : adj[i])
         {
-            cout<<adj[i][y]<<" ";
+            cout << it << " ";
         }
-        cout<<endl;
-    }
-}
-
-void printInfected(vector<bool> &infected)
-{
-
-    for(int i= 0 ; i<n; i++)
-    {
-        cout << infected[i]  << " ";
-    }
-    cout <<endl;
-}
-
-bool allInfected(vector<bool> &infected)
-{
-    int count =0 ;
-    int all =n;
-    for(int i =0 ; i<all;i++ )
-    {
-        if(infected[i] == 1)
-        {
-            count++;
-        }
-    }
-    return (count == all);
-}
-
-int setInfected(vector<bool> &infected,vector<bool> &adj)
-{
-    int count = 0;
-    for(int i =0; i<n;i++)
-    {
-        if(adj[i] == 1 and infected[i] == 0)
-        {
-            infected[i] = 1;
-            count ++;
-        }
-    }
-    return count;
-}
-
-void recur(vector<vector<bool>> &adj,vector<bool> &infected,int &time)
-{
-    // printInfected(infected);
-    if(allInfected(infected))
-    {
-        int ntime = time*t;
-        if(ntime < minTime or minTime == -1)
-        {
-            minTime = ntime;
-        }
-        return;
-    }
-    else
-    {
-        vector<bool> oldInfected = infected;
-        int moreInfect;
-        for(int i=0 ;i<n;i++)
-        {
-            if(oldInfected[i] == 1)
-            {
-                moreInfect += setInfected(infected,adj[i]);
-            }
-        }
-        if(moreInfect==0)
-        {
-            return ;
-        }
-        time++;
-        recur(adj,infected,time);
+        cout <<endl;
     }
 }
 
@@ -112,9 +37,7 @@ void isOne(string t , int &num)
     {
         t +='s';
     }
-
     cout << num << " " << t <<" " ;
-
 }
 
 void printAnswer()
@@ -134,55 +57,84 @@ void printAnswer()
     isOne("day",days);
     isOne("hour",hours);
     isOne("minute",minutes);
-
 }
 
-int counter =0 ;
-
-void dynamicBro(vector<vector<bool>> &adj , vector<bool> &infected)
+int bfs(int num)
 {
-    counter = (counter +(n/3) ) % n ;
-    for(int i=0 ; i<n ;i++)
+    vector<bool> visited(n,false);
+    queue<int> q;
+    q.push(num);
+    visited[num] = true;
+    int time = 0;
+    while(!q.empty())
     {
-        // cout << i <<endl;
-        if(infected[i] == 1)
+        int x = q.front();
+        q.pop();
+        cout << x << "is visited" <<endl;
+        for(auto it : adj[x])
         {
-            continue;
+            if(visited[it] == false)
+            {
+                q.push(it);
+                visited[it] = true;
+
+            }
         }
-        vector<bool> copyInfected(infected);
-        copyInfected[i] = 1;
-        // cout << "start " << i<< endl;
-        // printGraph(adj);
-        int time = 0;
-        recur(adj,copyInfected,time);
-        // cout << "end" <<endl;
+        time++;
     }
-    if(minTime!=-1)
+    
+    return time;
+}
+
+
+void printTimeArr()
+{
+    for(int i=0 ; i<n; i ++)
     {
-        printAnswer();
-        return;
+        cout << timeSave[i]<< " ";
     }
-    infected[counter] =1;
-    dynamicBro(adj,infected);
+    cout <<endl;
 }
 
 int main() {
     cin >> n;
     cin >> t;
-
-    vector<vector<bool>> adj(n,vector<bool>(n,0));
+    timeSave = vector<int>(n,0);
+    adj = vector<vector<int>>(n,vector<int>());
     int p1, p2;
     while (cin >> p1 && p1 != -1) 
     {
         cin >> p2;
-        adj[p1][p2] = 1;
-        adj[p2][p1] = 1;
+        vector<int>::iterator it1;
+        it1 = find(adj[p1].begin(),adj[p1].end(),p2);
+        vector<int>::iterator it2;
+        it2 = find(adj[p2].begin(),adj[p2].end(),p1);
+        if(it1 == adj[p1].end())
+        {
+            adj[p1].push_back(p2);
+        }
+        if(it2 == adj[p2].end())
+        {
+            adj[p2].push_back(p1);
+        }
     }
-    // placement(adj);
     // printGraph(adj);
-
-    vector<bool> infected(n,0);
-    // start
-    dynamicBro(adj,infected);
+    for(int i=0 ; i< n ; i++)
+    {   
+        int x = bfs(i);
+        cout << x << " end " << endl;
+    }
+    
+    
+    for(auto time: timeSave)
+    {
+        if(time!=0)
+        {
+            minTime = time*t;
+            printAnswer();
+            break;
+        }
+    }
+    // printTimeArr();
     return 0;
 }
