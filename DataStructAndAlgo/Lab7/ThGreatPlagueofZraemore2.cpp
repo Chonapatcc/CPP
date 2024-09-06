@@ -1,25 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<vector<int>> adj;
 const int MINUTES_PER_HOUR = 60;
 const int HOURS_PER_DAY = 24;
 const int DAYS_PER_MONTH = 30;
 const int MONTHS_PER_YEAR = 12;
-long long int n, t;
-
-void printGraph(vector<vector<int>> &adj)
-{
-    for(int i =0 ; i<n ; i++)
-    {
-        cout << i <<" "  ;
-        for(auto it : adj[i])
-        {
-            cout << it << " ";
-        }
-        cout <<endl;
-    }
-}
 
 bool isOne(string t , int &num)
 {
@@ -57,40 +42,53 @@ void printAnswer(int minTime)
         cout <<  "0 minutes";
     }
 }
-
-int bfs(int num,vector<int> &visited,int count)
+void printGraph(vector<vector<int>> &adj)
 {
-    vector<int> vec1;
-    vec1.push_back(num);
-    visited[num] = count;
-    int time = 0;
-    while(!vec1.empty())
+    for(int i =0 ; i<adj.size();i++)
     {
-        vector<int> vec2;
-        for(auto it : vec1)
+        cout << i <<" -> "  ;
+        for(auto it : adj[i])
         {
-            if(visited[it] == -1 or time == 0)
-            {
-                visited[it] = count;
-                for(auto it2 : adj[it])
-                {
-                    if(visited[it2] == -1)
-                    {
-                        vec2.push_back(it2);
-                    }
-                }
-            }
+            cout << it << " ";
         }
-        vec1 = vec2;
-        time++;
+        cout <<endl;
     }
-    return time ;
 }
 
-int bfs2(int num,vector<int> &visited)
+void bfs(vector<vector<int>> &adj,vector<int> &visited,int num,int type)
+{
+    queue<int> q;
+    q.push(num);
+    visited[num] = type;
+    while(!q.empty())
+    {
+        int x = q.front();
+        q.pop();
+        for(auto it : adj[x])
+        {
+            if(visited[it] == -1)
+            {
+                visited[it] = type;
+                q.push(it);
+            }
+        }
+    }
+}
+
+void printType(vector<int> &visited)
+{
+    for(auto it : visited)
+    {
+        cout << it << " ";
+    }
+    cout <<endl;
+}
+
+int bfsWithLevel(int num,vector<vector<int>> &adj)
 {
     vector<int> vec1;
     vec1.push_back(num);
+    vector<int> visited(adj.size(),0);
     visited[num] = 1;
     int time = 0;
     while(!vec1.empty())
@@ -98,34 +96,33 @@ int bfs2(int num,vector<int> &visited)
         vector<int> vec2;
         for(auto it : vec1)
         {
-            if(visited[it] == -1 or time == 0)
+            // cout << it << " -> ";
+            for(auto it2 : adj[it])
             {
-                visited[it] = 1;
-                for(auto it2 : adj[it])
+                if(visited[it2] == 0)
                 {
-                    if(visited[it2] == 0)
-                    {
-                        vec2.push_back(it2);
-                    }
+                    vec2.push_back(it2);
+                    visited[it2] = 1;
                 }
             }
+            
         }
         vec1 = vec2;
         time++;
     }
+    // cout << endl;
     return time ;
 }
 
-int startFrom(vector<int> &vec,int count)
+int startFrom(vector<int> &nodeType,int type,vector<vector<int>> &adj)
 {
-    int minTime = -1;
-    for(auto x:vec)
+    int minTime =-1;
+    for(int i=0 ; i<nodeType.size();i++)
     {
-        if(x == count)
+        if(nodeType[i] == type)
         {
-            vector<int> vec2(vec);
-
-            int finder = bfs2(x,vec2);
+            int finder = bfsWithLevel(i,adj);
+            // cout << finder <<endl;
             if(finder < minTime or minTime == -1)
             {
                 minTime = finder;
@@ -135,49 +132,46 @@ int startFrom(vector<int> &vec,int count)
     return minTime;
 }
 
-void printVec(vector<int> &vec)
+int main()
 {
-    for(auto it : vec)
-    {
-        cout << it << " ";
-    }
-    cout <<endl;
-}
-
-
-int main() {
+    int n;
+    long long int t;
     cin >> n;
     cin >> t;
-    adj = vector<vector<int>>(n,vector<int>());
+    vector<vector<int>> adj(n,vector<int>());
     int p1, p2;
     while (cin >> p1 && p1 != -1) 
     {
         cin >> p2;
-        adj[p1].push_back(p2);
-        adj[p2].push_back(p1);
-    }
-    // printGraph(adj);
-    vector<int> visited(n,-1);
-    int count = 0;
-    long long int time = -1;
-    for(int i=0 ; i< n ; i++)
-    {       
-        if(visited[i] == -1)
+        if(p1!=p2)
         {
-            bfs(i,visited,count);
-            vector<int> temp;
-
-            int timeX = startFrom(visited,count);
-            if(time == -1 or timeX>time)
-            {
-                time = timeX;
-            }
-            count++;
+            adj[p1].push_back(p2);
+            adj[p2].push_back(p1);
         }
     }
-    cout << time <<endl;
-    time-=1;
-    time*=t;
-    printAnswer(time);
+    // printGraph(adj);
+    vector<int> nodeType(n,-1);
+    int type = 0 ;
+    long long int maxTime = -1;
+    for(int i=0 ;i<n;i++)
+    {
+        if(nodeType[i] == -1)
+        {
+            bfs(adj,nodeType,i,type);
+            int minTime = startFrom(nodeType,type,adj);
+            // cout << "minTime :" <<type<<" = " <<minTime <<endl;
+            if(minTime > maxTime or minTime == -1)
+            {
+                maxTime = minTime;
+            }
+            type++;
+        }
+    }
+    // cout << maxTime <<endl;
+    maxTime -= 1;
+    maxTime*=t;
+    // cout << maxTime <<endl;
+    printAnswer(maxTime);
     return 0;
 }
+
