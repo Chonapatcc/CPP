@@ -1,10 +1,6 @@
 #include <bits/stdc++.h>
-#include <chrono>
 using namespace std;
 
-
-int minTime = -1;
-vector<int> timeSave;
 vector<vector<int>> adj;
 const int MINUTES_PER_HOUR = 60;
 const int HOURS_PER_DAY = 24;
@@ -27,20 +23,21 @@ void printGraph(vector<vector<int>> &adj)
     }
 }
 
-void isOne(string t , int &num)
+bool isOne(string t , int &num)
 {
     if(num==0)
     {
-        return ;
+        return 0;
     }
     else if(num>1)
     {
         t +='s';
     }
     cout << num << " " << t <<" " ;
+    return 1;
 }
 
-void printAnswer()
+void printAnswer(int minTime)
 {
     // minTime = 1*2671340;
     int years = minTime / (MINUTES_PER_HOUR * HOURS_PER_DAY * DAYS_PER_MONTH * MONTHS_PER_YEAR);
@@ -51,90 +48,89 @@ void printAnswer()
     minTime %= (MINUTES_PER_HOUR * HOURS_PER_DAY);
     int hours = minTime / MINUTES_PER_HOUR;
     int minutes = minTime % MINUTES_PER_HOUR;
-
-    isOne("year",years);
-    isOne("month",months);
-    isOne("day",days);
-    isOne("hour",hours);
-    isOne("minute",minutes);
+    int count = 0;
+    count+= isOne("year",years);
+    count+= isOne("month",months);
+    count+=isOne("day",days);
+    count+=isOne("hour",hours);
+    count+= isOne("minute",minutes);
+    if(count == 0)
+    {
+        cout <<  "0 minutes";
+    }
 }
 
-int bfs(int num)
+bool AllIsVisited(vector<bool> &visited)
 {
-    vector<bool> visited(n,false);
+    for(auto it : visited)
+    {
+        if(it == false)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+int bfs(int num,vector<bool> &visited)
+{
     queue<int> q;
     q.push(num);
     visited[num] = true;
     int time = 0;
     while(!q.empty())
     {
+        if(AllIsVisited(visited))
+        {
+            return time;
+        }
         int x = q.front();
         q.pop();
-        cout << x << "is visited" <<endl;
+        // cout << x << "is visited" <<endl;
         for(auto it : adj[x])
         {
             if(visited[it] == false)
             {
                 q.push(it);
                 visited[it] = true;
-
             }
         }
         time++;
     }
-    
-    return time;
+    return time ;
 }
 
-
-void printTimeArr()
+int startFrom(int num)
 {
-    for(int i=0 ; i<n; i ++)
-    {
-        cout << timeSave[i]<< " ";
-    }
-    cout <<endl;
+    vector<bool> visited(n,false);
+    int time = bfs(num,visited);
+    return time;
 }
 
 int main() {
     cin >> n;
     cin >> t;
-    timeSave = vector<int>(n,0);
     adj = vector<vector<int>>(n,vector<int>());
     int p1, p2;
     while (cin >> p1 && p1 != -1) 
     {
         cin >> p2;
-        vector<int>::iterator it1;
-        it1 = find(adj[p1].begin(),adj[p1].end(),p2);
-        vector<int>::iterator it2;
-        it2 = find(adj[p2].begin(),adj[p2].end(),p1);
-        if(it1 == adj[p1].end())
-        {
-            adj[p1].push_back(p2);
-        }
-        if(it2 == adj[p2].end())
-        {
-            adj[p2].push_back(p1);
-        }
+        adj[p1].push_back(p2);
+        adj[p2].push_back(p1);
     }
     // printGraph(adj);
+    int time = -1;
     for(int i=0 ; i< n ; i++)
     {   
-        int x = bfs(i);
-        cout << x << " end " << endl;
-    }
-    
-    
-    for(auto time: timeSave)
-    {
-        if(time!=0)
+        int time2 =startFrom(i);
+        // cout << time2<<endl;
+        if(time == -1 or time2<time)
         {
-            minTime = time*t;
-            printAnswer();
-            break;
+            time = time2;
         }
     }
-    // printTimeArr();
+    time-=1;
+    time*=t;
+    printAnswer(time);
     return 0;
 }
