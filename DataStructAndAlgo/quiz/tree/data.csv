@@ -1,0 +1,20 @@
+Directory, Size (K)
+/user/rt/courses/, 1000
+/user/rt/courses/cs016/, 2000
+/user/rt/courses/cs016/grades, 8000
+/user/rt/courses/cs016/homeworks/, 1000
+/user/rt/courses/cs016/homeworks/hw1, 3000
+/user/rt/courses/cs016/homeworks/hw2, 2000
+/user/rt/courses/cs016/homeworks/hw3, 4000
+/user/rt/courses/cs016/programs/, 1000
+/user/rt/courses/cs016/programs/pr1, 57000
+/user/rt/courses/cs016/programs/pr2, 97000
+/user/rt/courses/cs016/programs/pr3, 74000
+/user/rt/courses/cs252/, 1000
+/user/rt/courses/cs252/grades, 3000
+/user/rt/courses/cs252/projects/, 1000
+/user/rt/courses/cs252/projects/papers/, 1000
+/user/rt/courses/cs252/projects/papers/buylow, 26000
+/user/rt/courses/cs252/projects/papers/sellhigh, 55000
+/user/rt/courses/cs252/projects/demos/, 1000
+/user/rt/courses/cs252/projects/demos/market, 4786000
