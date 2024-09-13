@@ -1,109 +1,69 @@
-#include <iostream>
-#include <vector>
-#include <set>
-#include <algorithm>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-const int MAXN = 50;
 
-int V, E;
-vector<vector<int>> adj(vector<int);
-vector<int> path;
-set<vector<int>> cycles; 
-bool visited[MAXN];
-
-void printTree()
+void printPath(vector<int> &path)
 {
-    for(int i=1; i<=V; ++i)
+    cout << "Cycle exists with vertex ";
+    for(int i=0;i<path.size();i++)
     {
-        cout << i << " : " ;
-        for(int val: adj[i])
-        {
-            cout << val << " ";
-        }
-        cout <<endl;
+        cout<<path[i]<<" ";
     }
+    cout<<endl;
 }
 
-void findCycles(int u, int start) 
+
+void dfs(vector<set<int>> &adj,int node,vector<int> path,vector<bool> visited,bool &isTree)
 {
-    visited[u] = true;
-    path.push_back(u);
-
-    for (int v : adj[u]) 
+    path.push_back(node);
+    for(int x:adj[node])
     {
-        if ( && path.size() > 2) 
-        { 
-            cycles.insert(path); 
-        } 
-        else if (!visited[v]) 
+        if(!visited[x])
         {
-            findCycles(v, start);
+            visited[x]=true;
+            adj[x].erase(node);
+            dfs(adj,x,path,visited,isTree);
+        }
+        else
+        {
+            printPath(path);
+            isTree=false;
+            return;
         }
     }
-
-    path.pop_back();
-    visited[u] = false;
 }
 
-bool isTree() {
-    for (int i = 1; i <= V; ++i) 
+int main()
+{
+    int V,E;
+    cin>>V>>E;
+    vector<set<int>> adj(V+1,set<int>());
+    for(int i=0;i<E;i++)
     {
-        findCycles(i, i);
-        if (!cycles.empty()) 
-        {
-            return false; 
-        }
+        int u,v;
+        cin>>u>>v;
+        adj[u].insert(v);
+        adj[v].insert(u);
     }
-    return true;
-}
-
-int main() {
-    cin >> V >> E;
-
-    for (int i = 0; i < E; ++i) 
+    bool isTree=true;
+    vector<int> path;
+    for(int i=1;i<=V;i++)
     {
-        int u, v;
-        cin >> u >> v;
-        adj[u].push_back(v);
-        adj[v].push_back(u); 
-    }   
-
-    printTree();
-
-
-    if (!isTree()) 
-    {
-        for (const vector<int>& cycle : cycles) 
-        {
-            string temp = "";
-            for (int i=0 ; i< cycle.size(); ++i) 
-            {
-                int v = cycle[i];
-                if(!visited[v])
-                {
-                    temp+= to_string(v) + " ";
-                }
-                if(i!=0)
-                {
-                    visited[v] = true;
-                }
-                
-            }
-            // if(temp!="1 " )
-            // {
-                cout << "Cycle exists with vertex ";
-                cout << temp;
-                cout << endl;
-            // }
-        }
-        cout << "Is not a tree" << endl;
-    } 
-    else 
-    {
-        cout << "Is a tree" << endl;
+        vector<bool> visited(V+1,false);
+        visited[i]=true;
+        dfs(adj,i,path,visited,isTree);
     }
-
+    
+    if(isTree)
+    {
+        cout <<"Is a tree";
+    }
+    else
+    {
+        cout<<"Is not a tree";
+    }
+    
+    
     return 0;
+
 }
