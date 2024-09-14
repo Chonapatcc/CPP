@@ -1,113 +1,101 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <set>
+#include <queue>
+
 using namespace std;
 
-int findId(vector<int> &node, int val)
-{
-    for(int i=0;i<node.size();i++)
+struct Node {
+    int data;
+
+    Node* parent;
+    vector<Node*> children;
+
+    Node(int data)
     {
-        if(node[i]==val)
-        {
-            return i;   
-        }
+        this->data = data;
+        this->parent = NULL;
+        this->children = vector<Node*>();
     }
-    return -1;
-}
+};
 
-void printStore(vector<int> &node, vector<set<int>> &nodeChild)
-{
-    int size = node.size() ;
-    for(int i=0 ; i<size;i++)
-    {
-        cout<<"node = "<<node[i];
-        cout<<"child ";
-        for(int x:nodeChild[i])
-        {
-            cout<<x<<" ";
-        }
-        cout<<endl;
-    }
-}
+void burnTree(Node* node) {
 
+    queue<Node*> q = queue<Node*>();
+    unordered_map<Node*, bool> visited;
 
-void bfs(vector<int> &node, vector<set<int>> &nodeChild, int start,vector<bool> &visited,queue<int> &q)
-{
-    queue<int> newQ;
-    bool ch=false;
-    while(!q.empty())
-    {
-        int curr = q.front();
+    q.push(node);
+    visited[node] = true;
+    cout<<node->data<<endl;
+
+    queue<Node*> q2 = queue<Node*>();
+    
+    while (!q.empty()) {
+        Node* current = q.front();
         q.pop();
-        cout<<curr<<" ";
-        int id = findId(node,curr);
-        for(int x:nodeChild[id])
+        
+        Node *parent = current->parent;
+        vector<Node*> children = current->children;
+
+        if(parent != NULL)
         {
-            int id2 = findId(node,x);
-            if(!visited[id2])
+            if(visited.find(parent) == visited.end())
             {
-                visited[id2]=true;
-                newQ.push(x);
+                cout<<parent->data<<" ";
+                visited[parent]=true;
+                q2.push(parent);
             }
         }
-        ch= true;
-    }
-    if(ch)
-    {
-        cout<<endl;
-    }
-    
-    if(!newQ.empty())
-    {
-        bfs(node,nodeChild,newQ.front(),visited,newQ);
+        for(Node* child : children)
+        {
+            if(visited.find(child) == visited.end())
+            {
+                cout<<child->data<<" ";
+                visited[child]=true;
+                q2.push(child);
+            }
+        }
+        if(q.empty() and !q2.empty())
+        {
+            cout<<endl;
+            q = q2;
+            q2 = queue<Node*>();
+        }
     }
 }
 
-int main()
-{
-    int n;
-    cin>>n;
-    int r;
-    cin>>r;
+int main() {
+    int n, r, p, c, t;
+    cin >> n;
 
-    vector<int> node;
-    vector<set<int>> nodeChild;
-    node.push_back(r);
-    nodeChild.push_back(set<int>());
+    unordered_map<int, Node*> nodes;
 
-    for(int i=1; i<n ; i++)
-    {
-        int p,c;
-        cin>>p>>c;
+    cin >> r;
+    nodes[r] = new Node(r);
 
-        int id = findId(node,p);
-        if(id==-1)
-        {
-            node.push_back(p);
-            nodeChild.push_back(set<int>());
-            id = node.size()-1;
+    for (int i = 1; i <= n - 1; ++i) {
+        cin >> p >> c;
+
+        if (nodes.find(p) == nodes.end()) {
+            nodes[p] = new Node(p);
         }
-        nodeChild[id].insert(c);
 
-        int id2 = findId(node,c);
-        if(id2==-1)
-        {
-            node.push_back(c);
-            nodeChild.push_back(set<int>());
-            id2 = node.size()-1;
+        if (nodes.find(c) == nodes.end()) {
+            nodes[c] = new Node(c);
         }
-        nodeChild[id2].insert(p);
+
+        nodes[p]->children.push_back(nodes[c]);
+        nodes[c]->parent = nodes[p];
     }
-    
-    int start;
-    cin>>start;
-    vector<bool> visited(node.size(),false);
 
-    queue<int> q;
-    q.push(start);
-    int id = findId(node,start);
-    visited[id]=true;
-    bfs(node,nodeChild,start,visited,q);
-    // printStore(node,nodeChild);
+
+    cin >> t;
+    if (nodes.find(t) == nodes.end()) {
+        nodes[t] = new Node(t);
+    }
+
+
+    burnTree(nodes[t]);
     return 0;
-
-
 }
