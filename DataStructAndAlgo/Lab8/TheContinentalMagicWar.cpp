@@ -1,85 +1,93 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <algorithm>
-#include <set>
+#include <iomanip>
+#include <limits>
 
 using namespace std;
 
 struct City {
-    int soldiers;
-    int wealth;
-    int loss_percentage;
-    int gain_percentage;
+    int troops;
+    double assets;
+    double lossRate;
+    double gainRate;
+    vector<int> connections;
 };
 
-vector<City> cities;
-vector<set<int>> connections;
-vector<vector<int>> best_paths;
-int max_wealth = 0;
-
-bool canConquer(int &current_soldiers, int &city_index) {
-    return (current_soldiers * (100 - cities[city_index].loss_percentage) / 100) > cities[city_index].soldiers;
-}
-
-int calculateNewSoldiers(int &current_soldiers, int &city_index) {
-    return current_soldiers * (100 - cities[city_index].loss_percentage) / 100 + 
-           cities[city_index].soldiers * cities[city_index].gain_percentage / 100;
-}
-
-void conquer(int current_city, int current_soldiers, int current_wealth, vector<int>& current_path) {
-    if (current_wealth > max_wealth) {
-        max_wealth = current_wealth;
-        best_paths.clear();
-        best_paths.push_back(current_path); 
-    } else if (current_wealth == max_wealth) {
-        best_paths.push_back(current_path); 
+struct State {
+    vector<int> path;
+    int currentCity;
+    int remainingTroops;
+    double totalAssets;
+    
+    bool operator<(const State& other) const {
+        return totalAssets < other.totalAssets;
     }
+};
 
-    for (int next_city : connections[current_city]) {
-        if (canConquer(current_soldiers, next_city)) {
+vector<State> bestPaths;
+
+void findBestPaths(const vector<City>& cities, int startTroops) {
+    priority_queue<State> pq;
+    pq.push({vector<int>{0}, 0, startTroops, 0.0});
+    
+    while (!pq.empty() && bestPaths.size() < 2000) {
+        State current = pq.top();
+        pq.pop();
+        
+        if (find_if(bestPaths.begin(), bestPaths.end(), 
+                    [&](const State& s) { return s.path == current.path; }) == bestPaths.end()) {
+            bestPaths.push_back(current);
+        }
+        
+        for (int nextCity : cities[current.currentCity].connections) {
+            int troopsAfterLoss = current.remainingTroops * (1 - cities[nextCity].lossRate / 100.0);
             
-            current_path.push_back(next_city);
-            conquer(next_city, calculateNewSoldiers(current_soldiers, next_city), 
-                    current_wealth + cities[next_city].wealth, current_path);
-            current_path.pop_back(); 
+            if (troopsAfterLoss > cities[nextCity].troops) {
+                int newTroops = troopsAfterLoss + cities[nextCity].troops * (cities[nextCity].gainRate / 100.0);
+                double newAssets = current.totalAssets + cities[nextCity].assets;
+                
+                vector<int> newPath = current.path;
+                newPath.push_back(nextCity);
+                
+                pq.push({newPath, nextCity, newTroops, newAssets});
+            }
         }
     }
 }
 
 int main() {
-    int N, C;
-    cin >> N >> C;
-
-    cities.resize(C + 1);
-    connections.resize(C + 1);
-
-    for (int i = 1; i <= C; i++) {
-        cin >> cities[i].soldiers >> cities[i].wealth >> cities[i].loss_percentage >> cities[i].gain_percentage;
+    int startTroops, cityCount;
+    cin >> startTroops >> cityCount;
+    
+    vector<City> cities(cityCount+1);
+    
+    for (int i = 0; i < cityCount; ++i) {
+        cin >> cities[i].troops >> cities[i].assets >> cities[i].lossRate >> cities[i].gainRate;
     }
-
-    for (int i = 1; i <= C; i++) {
+    
+    for (int i = 0; i < cityCount; ++i) {
         int from, to;
         cin >> from >> to;
         if(from>to)
         {
             swap(from,to);
         }
-        connections[from].insert(to);
+        cities[from].connections.push_back(to);
     }
-
-    vector<int> initial_path = {0}; 
-    conquer(0, N, 0, initial_path);
-
-    for (const auto& path : best_paths) {
+    
+    findBestPaths(cities, startTroops);
+    
+    for (const auto& state : bestPaths) {
         cout << "Start";
-        for (int city : path) {
+        for (int city : state.path) {
             if (city != 0) {
                 cout << " -> " << city;
             }
         }
         cout << " -> End" << endl;
     }
-
-
+    
     return 0;
 }
