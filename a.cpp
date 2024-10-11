@@ -4,6 +4,7 @@ using namespace std;
 #define NMAX 500
 vector <int> *createGraph()
 {
+    
     return new vector<int>[NMAX];
 }
 void printGraph(vector<int> *adjList,int size)
