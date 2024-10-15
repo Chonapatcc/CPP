@@ -5,7 +5,9 @@ using namespace std;
 vector <int> *createGraph()
 {
     
-    
+     
+
+     
     return new vector<int>[NMAX];
 }
 void printGraph(vector<int> *adjList,int size)
