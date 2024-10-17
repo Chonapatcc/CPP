@@ -1,29 +1,89 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define NMAX 500
-vector <int> *createGraph()
+class Node
 {
-    
-     
+public :
+    int data;
+    Node* left;
+    Node* right;
+};
 
-     
-    return new vector<int>[NMAX];
-}
-void printGraph(vector<int> *adjList,int size)
+Node *head ;
+void addChild(int child)
 {
-    for(int i=0 ; i < size ; i++)
-    {
-        cout << "[" << i << "]head";
-        for(int y=0 ;y<adjList[i].size();y++)
+
+    Node *node = head;
+
+    Node *newNode  = new Node();
+    newNode->data = child;
+    while(true)
+    {  
+        if(child<node->data)
         {
-            cout << "-> "<< adjList[i][y];
+            if(node->left == nullptr)
+            {
+
+                node->left = newNode;
+                break;
+            }
+            else
+            {
+                node = node->left;
+            }
         }
-        cout << endl;
+        else 
+        {
+            if(node->right == nullptr)
+            {
+                node->right = newNode;
+                break;
+            }
+            else
+            {
+                node = node->right;
+            }
+        }
 
     }
+    
 }
+
+
+
+int findMax(Node *node )
+{
+    while(node->right!=nullptr)
+    {
+        node = node->right;
+    }
+    return node->data;
+}
+
+
+int findPredecessor(Node *node)
+{
+    int predecessor = findMax(node->left);
+    return predecessor;
+}
+
+
+
 int main()
 {
-    cout << "cat" <<endl;
+    head = new Node();
+
+    vector<int> nodes = {70,11,47,81,20,61,10,12,13,62};
+    head->data = 70;
+
+
+    for(int i =1 ; i<nodes.size(); i++)
+    {
+        addChild(nodes[i]);
+    }
+
+    cout << findPredecessor(head) <<endl;
+
+
+    
 }
