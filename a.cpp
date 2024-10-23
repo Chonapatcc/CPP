@@ -68,6 +68,10 @@ int findMax(Node *node )
 
 
 
+
+
+
+
 int findPredecessor(Node *node)
 {
     int predecessor = findMax(node->left);
