@@ -151,6 +151,7 @@ int main()
     head->data = 70;
 
 
+
     for(int i =1 ; i<nodes.size(); i++)
     {
         addChild(nodes[i]);
