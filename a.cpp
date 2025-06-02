@@ -6,6 +6,6 @@ int main() {
     cout << "This is a simple C++ program." << endl;
     cout << "g" ;
     cout << "Goodbye, World!" << endl;
-
+    return 0;
     
 }
