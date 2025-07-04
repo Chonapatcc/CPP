@@ -1,12 +1,11 @@
 #include <iostream>
-#include <string>
+using namespace std;
 
 int main() {
-    int a = 5;
-    int b = 10;
-    int c = a + b;
-
-    cout << "cat"<<endl;
-    std::cout << "The sum of " << a << " and " << b << " is " << c << std::endl;
+    cout << "Hello, World!" << endl;
+    cout << "This is a simple C++ program." << endl;
+    cout << "g" ;
+    cout << "Goodbye, World!" << endl;
     return 0;
+    
 }
